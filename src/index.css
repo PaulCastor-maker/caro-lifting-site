@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --brand: #0ea5e9;
+  --brand-dark: #0284c7;
+  --ink: #0f172a;
+  --muted: #334155;
+  --bg: #ffffff;
+  --bg-alt: #f8fafc;
+}
+
+.prose :where(h3):not(:where(.not-prose *)) {
+  @apply text-xl font-semibold text-slate-900;
+}
