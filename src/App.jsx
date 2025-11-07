@@ -1,81 +1,95 @@
+import React, { useState } from "react"
 
-import React, { useMemo, useState } from 'react'
+function App() {
+  const [sent, setSent] = useState(false)
 
-export default function App() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [sent, setSent] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  const nav = useMemo(() => [
-    { href: '#leistungen', label: 'Leistungen' },
-    { href: '#prozess', label: 'Prozess' },
-    { href: '#branchen', label: 'Branchen' },
-    { href: '#ueber-uns', label: 'Über uns' },
-    { href: '#kontakt', label: 'Kontakt' },
-  ], []);
-
-  const FORM_ENDPOINT = 'https://formspree.io/f/xvgvejln'; // TODO: Replace with your Formspree form ID
   const onSubmit = (e) => {
-    e.preventDefault();
-    setLoading(true);
-    const form = e.target;
-    const data = new FormData(form);
-    fetch(FORM_ENDPOINT, { method: 'POST', body: data, headers: { 'Accept': 'application/json' } })
-      .then(res => {
-        if (res.ok) {
-          setSent(true);
-        } else {
-          return res.json().then(j => { throw new Error(j?.errors?.[0]?.message || 'Fehler beim Senden'); });
-        }
-      })
-      .catch(err => { alert(err.message || 'Fehler beim Senden'); })
-      .finally(() => setLoading(false));
-  };
+    e.preventDefault()
+    const form = e.target
+    fetch(form.action, {
+      method: form.method,
+      body: new FormData(form),
+      headers: { Accept: "application/json" },
+    })
+      .then(() => setSent(true))
+      .catch(() => alert("Fehler beim Senden"))
+  }
+
+  const nav = [
+    { href: "#leistungen", label: "Leistungen" },
+    { href: "#kontakt", label: "Kontakt" },
+  ]
 
   return (
-    <div className='min-h-screen text-slate-900 [--brand:#0ea5e9] [--brand-dark:#0284c7] [--ink:#0f172a] [--muted:#334155] [--bg:#ffffff] [--bg-alt:#f8fafc]' style={{background: 'var(--bg)'}}>
-      <Header menuOpen={menuOpen} setMenuOpen={setMenuOpen} nav={nav} />
-      <main>
-        <Hero />
-        <Trustbar />
-        <Leistungen />
-        <CTASection id='angebot' />
-        <Prozess />
-        <Branchen />
-        <UeberUns />
-        <FAQ />
-        <Kontakt sent={sent} loading={loading} onSubmit={onSubmit} />
-        <Impressum />
-        <Datenschutz />
-      </main>
+    <>
+      <Header nav={nav} />
+      <Hero onSubmit={onSubmit} sent={sent} />
       <Footer />
-    </div>
+    </>
   )
 }
 
-function Header({ menuOpen, setMenuOpen, nav }) {
+function Header({ nav }) {
+  const [menuOpen, setMenuOpen] = useState(false)
   return (
-    <header className='sticky top-0 z-40 backdrop-blur bg-white/75 border-b border-slate-200/60'>
-      <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
-        <div className='flex h-16 items-center justify-between'>
-          <a href='#top' className='flex items-center gap-3'>
-            <Logo className='h-8 w-8'/>
-            <span className='font-semibold tracking-tight text-lg text-ink'>CaRo Lifting</span>
+    <header className="sticky top-0 z-40 backdrop-blur bg-white/75 border-b border-slate-200/60">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex h-16 items-center justify-between">
+          <a href="#top" className="flex items-center gap-3">
+            <Logo className="h-8 w-8" />
+            <span className="font-semibold tracking-tight text-lg text-ink">
+              CaRo Lifting
+            </span>
           </a>
-          <nav className='hidden md:flex items-center gap-8'>
-            {nav.map(n => <a key={n.href} href={n.href} className='text-sm text-slate-700 hover:text-ink transition'>{n.label}</a>)}
-            <a href='#kontakt' className='inline-flex items-center rounded-xl px-4 py-2 text-sm font-medium bg-[var(--brand)] text-white shadow hover:bg-[var(--brand-dark)]'>Richtpreis anfragen</a>
+
+          <nav className="hidden md:flex items-center gap-8">
+            {nav.map((n) => (
+              <a
+                key={n.href}
+                href={n.href}
+                className="text-sm text-slate-700 hover:text-ink transition"
+              >
+                {n.label}
+              </a>
+            ))}
+            <a
+              href="#kontakt"
+              className="inline-flex items-center rounded-xl px-4 py-2 text-sm font-medium bg-[var(--brand)] text-white shadow hover:bg-[var(--brand-dark)]"
+            >
+              Richtpreis anfragen
+            </a>
           </nav>
-          <button className='md:hidden inline-flex items-center justify-center rounded-lg p-2 border border-slate-300' onClick={() => setMenuOpen(v=>!v)} aria-label='Menü öffnen'>
-            <Burger open={menuOpen} />
+
+          <button
+            className="md:hidden p-2 border border-slate-300 rounded-lg"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Menü öffnen"
+          >
+            ☰
           </button>
         </div>
       </div>
+
       {menuOpen && (
-        <div className='md:hidden border-t border-slate-200 bg-white'>
-          <div className='mx-auto max-w-7xl px-4 py-3 flex flex-col gap-3'>
-            {nav.map(n => <a key={n.href} href={n.href} className='text-slate-700' onClick={()=>setMenuOpen(false)}>{n.label}</a>)}
-            <a href='#kontakt' onClick={()=>setMenuOpen(false)} className='inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-medium bg-[var(--brand)] text-white shadow hover:bg-[var(--brand-dark)]'>Richtpreis anfragen</a>
+        <div className="md:hidden border-t border-slate-200 bg-white">
+          <div className="mx-auto max-w-7xl px-4 py-3 flex flex-col gap-3">
+            {nav.map((n) => (
+              <a
+                key={n.href}
+                href={n.href}
+                className="text-slate-700"
+                onClick={() => setMenuOpen(false)}
+              >
+                {n.label}
+              </a>
+            ))}
+            <a
+              href="#kontakt"
+              onClick={() => setMenuOpen(false)}
+              className="inline-flex justify-center rounded-xl px-4 py-2 text-sm font-medium bg-[var(--brand)] text-white shadow hover:bg-[var(--brand-dark)]"
+            >
+              Richtpreis anfragen
+            </a>
           </div>
         </div>
       )}
@@ -83,13 +97,107 @@ function Header({ menuOpen, setMenuOpen, nav }) {
   )
 }
 
-function Hero() {
+function Hero({ onSubmit, sent }) {
   return (
-    <section className='relative overflow-hidden'>
-      <div className='absolute inset-0 -z-10 bg-gradient-to-b from-sky-50 to-white'/>
-      <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 lg:py-28'>
-        <div className='grid lg:grid-cols-2 gap-10 items-center'>
+    <section className="relative overflow-hidden" id="kontakt">
+      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-sky-50 to-white" />
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20">
+        <div className="grid lg:grid-cols-2 gap-10 items-center">
           <div>
-            <span className='inline-flex items-center gap-2 text-xs font-semibold tracking-wider uppercase text-sky-700 bg-sky-100 rounded-full px-3 py-1'>             <Dot/> Made in Bavaria – Handhabungstechnik           </span>            <h1 className='mt-5 text-4xl/tight sm:text-5xl/tight font-extrabold text-ink'>              Ergonomische Handlingsgeräte, präzise geplant & gebaut            </h1>\n            <p className='mt-5 text-lg text-slate-700 max-w-prose'>              CaRo Lifting entwickelt und fertigt Seilzug- und Hublösungen, die Lasten bewegen – sicher, effizient und auf Ihren Prozess abgestimmt. Von der Anfrage über Konstruktion bis zur Inbetriebnahme: alles aus einer Hand.            </p>            <div className='mt-8 flex flex-col sm:flex-row gap-3'>              <a href='#kontakt' className='rounded-xl px-6 py-3 bg-[var(--brand)] text-white font-medium shadow hover:bg-[var(--brand-dark)]'>Richtpreis in 24h*</a>              <a href='#leistungen' className='rounded-xl px-6 py-3 border border-slate-300 text-ink font-medium hover:bg-slate-50'>Leistungen entdecken</a>            </div>            <p className='mt-3 text-xs text-slate-500'>* werktags bei vollständigen Basisangaben</p>\n          </div>\n          <div className='relative'>\n            <div className='aspect-[4/3] rounded-3xl bg-gradient-to-br from-slate-100 to-white shadow-inner border border-slate-200 p-6'>\n              <DemoIllustration/>\n            </div>\n            <div className='absolute -bottom-5 -left-5 bg-white rounded-2xl shadow p-4 border border-slate-200'>\n              <div className='text-xs text-slate-500'>Beispielprojekt</div>\n              <div className='font-semibold'>Seilbalancer 80 kg • 2,5 m Hub • ESD</div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </section>\n  )\n}\n\nfunction Trustbar(){\n  const items=[\n    {label:'Beratung & Auslegung', icon: ShieldIcon},\n    {label:'Konstruktion (CAD)', icon: CubeIcon},\n    {label:'Montage & Inbetriebnahme', icon: WrenchIcon},\n    {label:'CE‑Dokumentation', icon: DocIcon},\n  ]\n  return (\n    <section className='bg-[var(--bg-alt)]'>\n      <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8'>\n        <div className='grid grid-cols-2 md:grid-cols-4 gap-4'>\n          {items.map(it => (\n            <div key={it.label} className='flex items-center gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm'>\n              <it.icon className='h-6 w-6 text-sky-600'/>\n              <span className='text-sm font-medium text-ink'>{it.label}</span>\n            </div>\n          ))}\n        </div>\n      </div>\n    </section>\n  )\n}\n\nfunction Leistungen(){\n  const cards=[\n    {title:'Seilzugsysteme', text:'Manuelle, pneumatische oder elektrische Seilzüge – ausgelegt auf Traglast, Hubhöhe und Taktzeit.', bullets:['Traglast 15–250 kg','Hub bis 3 m','ESD/ATEX optional']},\n    {title:'Greifer & Aufnahmen', text:'Einfach- bis Mehrpunktaufnahme, form- und kraftschlüssig – wechselbar und prozesssicher.', bullets:['Schnellwechsel','Drehdurchführung optional','Teile-Branding/ID']},\n    {title:'Schwenkarme & Portale', text:'Arbeitsplatzmontage mit Schwenkarmen, Kragarmen oder leichten Portalachsen.', bullets:['Reichweite bis 4 m','Energieführung','Bodenkonsolen/Deckenhänger']},\n  ]\n  return (\n    <section id='leistungen' className='py-20'>\n      <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>\n        <div className='md:flex md:items-end md:justify-between'>\n          <div>\n            <h2 className='text-3xl sm:text-4xl font-extrabold text-ink'>Leistungen</h2>\n            <p className='mt-3 text-slate-700 max-w-2xl'>Von der Auslegung bis zur Inbetriebnahme – wir liefern genau das, was Ihr Prozess braucht.</p>\n          </div>\n          <a href='#kontakt' className='mt-6 md:mt-0 inline-flex items-center rounded-xl px-5 py-2.5 text-sm font-medium bg-[var(--brand)] text-white shadow hover:bg-[var(--brand-dark)]'>Projekt anfragen</a>\n        </div>\n        <div className='mt-10 grid gap-6 md:grid-cols-3'>\n          {cards.map(c => (\n            <div key={c.title} className='group rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md transition'>\n              <div className='flex items-center justify-between'>\n                <h3 className='text-lg font-semibold text-ink'>{c.title}</h3>\n                <span className='inline-flex items-center rounded-full bg-sky-100 text-sky-700 text-xs px-3 py-1'>CaRo modular</span>\n              </div>\n              <p className='mt-3 text-slate-700'>{c.text}</p>\n              <ul className='mt-4 space-y-2'>\n                {c.bullets.map(b => <li key={b} className='flex items-center gap-2 text-sm text-slate-700'><CheckIcon className='h-4 w-4'/> {b}</li>)}\n              </ul>\n            </div>\n          ))}\n        </div>\n      </div>\n    </section>\n  )\n}\n\nfunction CTASection({id}){\n  return (\n    <section id={id} className='relative'>\n      <div className='absolute inset-0 -z-10 bg-gradient-to-r from-sky-50 to-white'/>\n      <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14'>\n        <div className='rounded-3xl border border-slate-200 bg-white p-8 md:p-10 shadow-sm'>\n          <div className='md:flex items-center justify-between gap-8'>\n            <div>\n              <h3 className='text-2xl font-bold text-ink'>Richtpreis in 24 Stunden*</h3>\n              <p className='mt-2 text-slate-700 max-w-prose'>Senden Sie uns Traglast, Hubhöhe, Taktzeit und Einsatzumgebung – wir melden uns mit einem Preisindikator.</p>\n              <p className='mt-1 text-xs text-slate-500'>* werktags bei vollständigen Basisangaben</p>\n            </div>\n            <a href='#kontakt' className='mt-6 md:mt-0 inline-flex items-center rounded-xl px-6 py-3 bg-[var(--brand)] text-white font-medium shadow hover:bg-[var(--brand-dark)]'>Anfrage starten</a>\n          </div>\n        </div>\n      </div>\n    </section>\n  )\n}\n\nfunction Prozess(){\n  const steps=[\n    {title:'Anfrage', text:'Aufgabenbeschreibung (Traglast, Hub, Takt, Umgebung).'},\n    {title:'Auslegung', text:'Technische Bewertung & Konzeptvorschlag mit grober Kalkulation.'},\n    {title:'Angebot', text:'Transparente Positionen, Lieferumfang & Termine.'},\n    {title:'Konstruktion', text:'CAD, Stücklisten, CE‑Bewertung.'},\n    {title:'Fertigung & Montage', text:'Beschaffung, Vormontage, Test.'},\n    {title:'Inbetriebnahme', text:'Aufbau vor Ort, Einweisung, Dokumentation.'},\n  ]\n  return (\n    <section id='prozess' className='py-20 bg-[var(--bg-alt)]'>\n      <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>\n        <h2 className='text-3xl sm:text-4xl font-extrabold text-ink'>Unser Prozess</h2>\n        <div className='mt-10 grid md:grid-cols-3 gap-6'>\n          {steps.map((s,i)=>(\n            <div key={s.title} className='relative rounded-3xl border border-slate-200 bg-white p-6 shadow-sm'>\n              <div className='absolute -top-3 -left-3 h-10 w-10 rounded-2xl bg-sky-600 text-white grid place-items-center font-bold shadow'>{i+1}</div>\n              <h3 className='text-lg font-semibold text-ink'>{s.title}</h3>\n              <p className='mt-2 text-slate-700'>{s.text}</p>\n            </div>\n          ))}\n        </div>\n      </div>\n    </section>\n  )\n}\n\nfunction Branchen(){\n  const sectors=[\n    {name:'Automotive & Zulieferer', note:'Montagehilfen, ESD, Taktvorgaben'},\n    {name:'Maschinenbau & Montage', note:'Einbauhilfen, Wechselaufnahmen'},\n    {name:'Logistik & Intralogistik', note:'Pick‑&‑Place, Hebehilfen'},\n    {name:'Elektronik & Medizintechnik', note:'Sauberkeit, ESD/ATEX optional'},\n  ]\n  return (\n    <section id='branchen' className='py-20'>\n      <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>\n        <div className='grid lg:grid-cols-2 gap-10 items-center'>\n          <div>\n            <h2 className='text-3xl sm:text-4xl font-extrabold text-ink'>Branchen & Anwendungen</h2>\n            <p className='mt-3 text-slate-700 max-w-prose'>Wir entwickeln Lösungen für unterschiedlichste Einsatzbereiche – immer mit Fokus auf Ergonomie, Prozesssicherheit und Wirtschaftlichkeit.</p>\n            <ul className='mt-6 space-y-3'>\n              {sectors.map(s => (\n                <li key={s.name} className='flex items-start gap-3'>\n                  <CheckIcon className='h-5 w-5 flex-none mt-0.5'/>\n                  <div>\n                    <div className='font-semibold text-ink'>{s.name}</div>\n                    <div className='text-sm text-slate-700'>{s.note}</div>\n                  </div>\n                </li>\n              ))}\n            </ul>\n          </div>\n          <div className='rounded-3xl border border-slate-200 bg-white shadow-sm p-6'>\n            <h3 className='text-lg font-semibold text-ink'>Technische Kennwerte (Beispiel)</h3>\n            <dl className='mt-4 grid grid-cols-2 gap-4 text-sm'>\n              <Metric label='Traglast' value='15–250 kg'/>\n              <Metric label='Hubhöhe' value='bis 3 m'/>\n              <Metric label='Taktzeit' value='> 8 s je Hub'/>\n              <Metric label='Energie' value='manuell/pneumatisch/elektrisch'/>\n              <Metric label='Optionen' value='ESD, ATEX, ID‑Marking'/>\n              <Metric label='Sicherheit' value='CE, Not‑Aus, Zweihand'/>\n            </dl>\n          </div>\n        </div>\n      </div>\n    </section>\n  )\n}\n\nfunction UeberUns(){\n  return (\n    <section id='ueber-uns' className='py-20 bg-[var(--bg-alt)]'>\n      <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>\n        <div className='grid lg:grid-cols-2 gap-10 items-center'>\n          <div>\n            <h2 className='text-3xl sm:text-4xl font-extrabold text-ink'>Über CaRo Lifting</h2>\n            <p className='mt-3 text-slate-700 max-w-prose'>Der Name CaRo Lifting setzt sich aus <strong>Castor</strong> und <strong>Rosenfeld</strong> zusammen. Wir sind ein technisch geprägtes Gründerteam mit Erfahrung in Konstruktion, Fertigung und Inbetriebnahme. Unser Anspruch: praxistaugliche Handlingsgeräte, klare Kommunikation und zuverlässige Termine.</p>\n            <ul className='mt-6 space-y-2 text-slate-700'>\n              <li className='flex items-center gap-2'><CheckIcon className='h-4 w-4'/> Kurzwege, schnelle Reaktion</li>\n              <li className='flex items-center gap-2'><CheckIcon className='h-4 w-4'/> Transparente Angebote & Preisindikatoren</li>\n              <li className='flex items-center gap-2'><CheckIcon className='h-4 w-4'/> Dokumentation & CE‑Konformität inklusive</li>\n            </ul>\n          </div>\n          <div className='rounded-3xl border border-slate-200 bg-white shadow-sm p-6'>\n            <h3 className='text-lg font-semibold text-ink'>Firmendaten (Entwurf)</h3>\n            <dl className='mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm'>\n              <Metric label='Firma' value='CaRo Lifting (i. Gr.)'/>\n              <Metric label='Rechtsform' value='GbR (geplant)'/>\n              <Metric label='Sitz' value='Feldkirchen‑Westerham, BY'/>\n              <Metric label='Einsatzgebiet' value='D‑A‑CH'/>\n              <Metric label='Sprache' value='DE / EN'/>\n              <Metric label='E‑Mail' value='info@caro-lifting.com'/>\n            </dl>\n          </div>\n        </div>\n      </div>\n    </section>\n  )\n}\n\nfunction FAQ(){\n  const faqs=[\n    {q:'Wie schnell erhalte ich einen Richtpreis?', a:'In der Regel innerhalb von 24h an Werktagen – vorausgesetzt, wir erhalten die Basisdaten (Traglast, Hub, Takt, Umgebung).'},\n    {q:'Baut ihr auch Sonderlösungen?', a:'Ja. Wir kombinieren standardisierte Module mit individuellen Greifern oder Aufnahmen, passend zu Ihrer Aufgabe.'},\n    {q:'Welche Dokumentation erhalte ich?', a:'Je nach Lieferumfang: CE‑Dokumentation, Betriebsanleitung, Wartungshinweise, Ersatzteilübersicht.'},\n    {q:'Übernehmt ihr die Montage vor Ort?', a:'Ja, inklusive Inbetriebnahme, Funktionsprüfung und Einweisung Ihrer Mitarbeitenden.'},\n  ]\n  return (\n    <section className='py-20'>\n      <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>\n        <h2 className='text-3xl sm:text-4xl font-extrabold text-ink'>FAQ</h2>\n        <div className='mt-8 grid md:grid-cols-2 gap-6'>\n          {faqs.map(f => (\n            <details key={f.q} className='group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm'>\n              <summary className='cursor-pointer list-none flex items-center justify-between'>\n                <span className='font-medium text-ink'>{f.q}</span>\n                <span className='ml-4 text-slate-500 group-open:rotate-45 transition'>✚</span>\n              </summary>\n              <p className='mt-3 text-slate-700'>{f.a}</p>\n            </details>\n          ))}\n        </div>\n      </div>\n    </section>\n  )\n}\n\nfunction Kontakt({sent, loading, onSubmit}){\n  return (\n    <section id='kontakt' className='py-20 bg-[var(--bg-alt)]'>\n      <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>\n        <div className='grid lg:grid-cols-2 gap-10'>\n          <div>\n            <h2 className='text-3xl sm:text-4xl font-extrabold text-ink'>Kontakt & Richtpreisanfrage</h2>\n            <p className='mt-3 text-slate-700 max-w-prose'>Je genauer Ihre Angaben, desto präziser unser Preisindikator. Nach Freigabe erstellen wir ein verbindliches Angebot.</p>\n            <ul className='mt-6 space-y-2 text-slate-700 text-sm'>\n              <li className='flex gap-2'><CheckIcon className='h-4 w-4 mt-0.5'/> Traglast (kg), Hubhöhe (m), Taktzeit (s), Einsatzumgebung</li>\n              <li className='flex gap-2'><CheckIcon className='h-4 w-4 mt-0.5'/> Greifer/Teileaufnahme (falls bekannt) und Befestigung</li>\n              <li className='flex gap-2'><CheckIcon className='h-4 w-4 mt-0.5'/> Fotos/Skizzen/CAD optional</li>\n            </ul>\n            <div className='mt-8 rounded-2xl border border-slate-200 bg-white p-5 text-sm text-slate-700'>\n              <div className='font-semibold text-ink'>CaRo Lifting (i. Gr.)</div>\n              <div>83620 Feldkirchen‑Westerham</div>\n              <div>info@caro-lifting.com</div>
+            <span className="inline-flex items-center gap-2 text-xs font-semibold tracking-wider uppercase text-sky-700 bg-sky-100 rounded-full px-3 py-1">
+              Made in Bavaria – Handhabungstechnik
+            </span>
+            <h1 className="mt-6 text-4xl font-bold tracking-tight text-ink">
+              Seil- & Handlingsgeräte von CaRo Lifting
+            </h1>
+            <p className="mt-4 text-slate-600 leading-relaxed">
+              Wir entwickeln, planen und fertigen hochwertige Handlingssysteme
+              für Industrie und Gewerbe – individuell nach Kundenanforderung.
+            </p>
+            <div className="mt-8 rounded-2xl border border-slate-200 bg-white p-5 text-sm text-slate-700">
+              <div className="font-semibold text-ink">CaRo Lifting (i. Gr.)</div>
+              <div>Am Bucklberg 10, 83620 Feldkirchen-Westerham</div>
+              <div>info@caro-lifting.com</div>
               <div>p.castor@caro-lifting.com</div>
-              <div>g.rosenfeld@caro-lifting.com</div>           </div>         </div>          <form onSubmit={onSubmit} className='rounded-3xl border border-slate-200 bg-white p-6 shadow-sm'>            {!sent ? (<>              <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>                <Field label='Vor‑ & Nachname' id='name' required />                <Field label='Firma' id='company' />                <Field type='email' label='E‑Mail' id='email' required />                <Field label='Telefon' id='phone' />              </div>              <div className='mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4'>                <Field label='Traglast (kg)' id='load' placeholder='z. B. 80' />                <Field label='Hubhöhe (m)' id='lift' placeholder='z. B. 2.5' />                <Field label='Taktzeit (s)' id='cycle' placeholder='z. B. 10' />              </div>              <div className='mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4'>                <Select label='Energie' id='energy' options={['manuell','pneumatisch','elektrisch','unbekannt']} />                <Select label='Umgebung' id='env' options={['Standard','ESD','ATEX','Clean']} />              </div>\n              <div className='mt-4'>\n                <Textarea label='Beschreibung / Anforderung' id='message' placeholder='Kurz die Aufgabe schildern…' rows={5} />\n              </div>\n              <div className='mt-4 flex items-center gap-3'>\n                <label className='inline-flex items-center gap-2 text-sm text-slate-700'>\n                  <input type='checkbox' className='h-4 w-4 rounded border-slate-300' required />\n                  <span>Ich stimme der Verarbeitung meiner Angaben zum Zwecke der Anfrage zu.</span>\n                </label>\n              </div>\n              <div className='mt-6 flex items-center gap-3'>\n                <button type='submit' className='inline-flex items-center rounded-xl px-6 py-3 bg-[var(--brand)] text-white font-medium shadow hover:bg-[var(--brand-dark)] disabled:opacity-60' disabled={loading}>\n                  {loading ? 'Wird gesendet…' : 'Richtpreis anfordern'}\n                </button>\n                <span className='text-xs text-slate-500'>Antwort werktags in ~24h bei vollständigen Basisangaben</span>\n              </div>\n            </>) : (\n              <div className='text-center py-10'>\n                <div className='mx-auto w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-700 grid place-items-center'>\n                  <CheckIcon className='h-7 w-7'/>\n                </div>\n                <h3 className='mt-4 text-xl font-semibold text-ink'>Danke! Ihre Anfrage ist eingegangen.</h3>\n                <p className='mt-2 text-slate-700'>Wir melden uns werktags innerhalb von 24 Stunden mit einem Preisindikator.</p>\n                <a href='#top' className='mt-6 inline-flex items-center rounded-xl px-5 py-2.5 border border-slate-300 text-ink font-medium hover:bg-slate-50'>Zurück nach oben</a>\n              </div>\n            )}\n          </form>\n        </div>\n      </div>\n    </section>\n  )\n}\n\nfunction Impressum(){\n  return (\n    <section id='impressum' className='py-20'>\n      <div className='mx-auto max-w-4xl px-4 sm:px-6 lg:px-8'>\n        <h2 className='text-3xl font-extrabold text-ink'>Impressum</h2>\n        <div className='mt-6 prose prose-slate max-w-none'>\n          <p><strong>CaRo Lifting GbR (i. Gr.)</strong><br/>83620 Feldkirchen‑Westerham<br/>E‑Mail: info@caro-lifting.com</p>\n          <p><strong>Vertretungsberechtigte Gesellschafter:</strong><br/>Paul‑Markus Castor, Gerrit Rosenfeld</p>\n          <p><strong>USt‑IdNr.:</strong> wird nachgereicht (sofern vorhanden)<br/><strong>Handelsregister:</strong> nicht eingetragen (GbR), Gründung in Vorbereitung</p>\n          <p><strong>Verantwortlich i. S. d. § 18 Abs. 2 MStV:</strong><br/>Paul‑Markus Castor, Anschrift wie oben</p>\n          <h3>Haftungsausschluss</h3>\n          <p>Die Inhalte dieser Website wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität können wir jedoch keine Gewähr übernehmen.</p>\n          <h3>Online‑Streitbeilegung</h3>\n          <p>Plattform der EU‑Kommission zur Online‑Streitbeilegung: https://ec.europa.eu/consumers/odr – Wir sind nicht verpflichtet und nicht bereit, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>\n          <p className='text-xs text-slate-500'>Hinweis: Bitte die persönlichen Daten (vollständige Namen, Anschrift, E‑Mail, ggf. Telefon) final ergänzen.</p>\n        </div>\n      </div>\n    </section>\n  )\n}\n\nfunction Datenschutz(){\n  return (\n    <section id='datenschutz' className='py-20 bg-[var(--bg-alt)]'>\n      <div className='mx-auto max-w-4xl px-4 sm:px-6 lg:px-8'>\n        <h2 className='text-3xl font-extrabold text-ink'>Datenschutzerklärung</h2>\n        <div className='mt-6 prose prose-slate max-w-none'>\n          <p>Wir nehmen den Schutz Ihrer personenbezogenen Daten sehr ernst. Nachfolgend informieren wir Sie über die Verarbeitung personenbezogener Daten beim Besuch dieser Website.</p>\n          <h3>1. Verantwortlicher</h3>\n          <p>CaRo Lifting GbR (i. Gr.), 83620 Feldkirchen‑Westerham, E‑Mail: info@caro-lifting.com</p>\n          <h3>2. Hosting</h3>\n          <p>Unsere Website wird bei einem externen Dienstleister gehostet. Personenbezogene Daten, die auf dieser Website erfasst werden, werden auf den Servern des Hosters verarbeitet. Mit dem Hoster besteht ein Auftragsverarbeitungsvertrag gem. Art. 28 DSGVO.</p>\n          <h3>3. Server‑Logfiles</h3>\n          <p>Der Provider der Seiten erhebt und speichert automatisch Informationen in sog. Server‑Logfiles (Browsertyp/‑version, Referrer URL, Hostname, Uhrzeit der Serveranfrage, IP‑Adresse). Eine Zusammenführung dieser Daten mit anderen Datenquellen wird nicht vorgenommen.</p>\n          <h3>4. Kontaktformular</h3>\n          <p>Die von Ihnen im Kontaktformular eingegebenen Daten verarbeiten wir zur Bearbeitung Ihrer Anfrage (Art. 6 Abs. 1 lit. b DSGVO). Die Daten werden gelöscht, sobald der Zweck entfällt und keine gesetzlichen Aufbewahrungsfristen entgegenstehen.</p>\n          <h3>5. Cookies / Tracking</h3>\n          <p>Wir verwenden derzeit keine optionalen Cookies oder Tracking‑Tools. Sollten künftig Analyse‑ oder Marketing‑Tools eingesetzt werden, informieren wir hierüber und holen ggf. Ihre Einwilligung ein.</p>\n          <h3>6. Ihre Rechte</h3>\n          <p>Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit sowie Widerspruch. Zudem besteht ein Beschwerderecht bei einer Aufsichtsbehörde.</p>\n          <h3>7. Kontakt</h3>\n          <p>Für Datenschutzanfragen wenden Sie sich an: info@caro-lifting.com</p>\n          <p className='text-xs text-slate-500'>Rechtlicher Hinweis: Diese Vorlage ist ein Muster und ersetzt keine individuelle Rechtsberatung. Bitte an euren tatsächlichen Einsatz (Hosting, Tools, Dienste) anpassen.</p>\n        </div>\n      </div>\n    </section>\n  )\n}\n\nfunction Footer(){\n  return (\n    <footer className='border-t border-slate-200'>\n      <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10'>\n        <div className='grid md:grid-cols-4 gap-8'>\n          <div>\n            <div className='flex items-center gap-3'>\n              <Logo className='h-7 w-7'/>\n              <span className='font-semibold'>CaRo Lifting</span>\n            </div>\n            <p className='mt-3 text-sm text-slate-700 max-w-sm'>Handhabungstechnik aus einer Hand: Auslegung, Konstruktion, Montage & Inbetriebnahme.</p>\n          </div>\n          <div>\n            <h4 className='font-semibold text-ink'>Kontakt</h4>\n            <ul className='mt-3 text-sm text-slate-700 space-y-1'>\n              <li>83620 Feldkirchen‑Westerham</li>\n              <li>info@caro-lifting.com</li>\n              <li>D‑A‑CH</li>\n            </ul>\n          </div>\n          <div>\n            <h4 className='font-semibold text-ink'>Seiten</h4>\n            <ul className='mt-3 text-sm text-slate-700 space-y-1'>\n              <li><a className='hover:underline' href='#leistungen'>Leistungen</a></li>\n              <li><a className='hover:underline' href='#prozess'>Prozess</a></li>\n              <li><a className='hover:underline' href='#branchen'>Branchen</a></li>\n              <li><a className='hover:underline' href='#ueber-uns'>Über uns</a></li>\n              <li><a className='hover:underline' href='#kontakt'>Kontakt</a></li>\n            </ul>\n          </div>\n          <div>\n            <h4 className='font-semibold text-ink'>Rechtliches</h4>\n            <ul className='mt-3 text-sm text-slate-700 space-y-1'>\n              <li><a className='hover:underline' href='#impressum'>Impressum</a></li>\n              <li><a className='hover:underline' href='#datenschutz'>Datenschutz</a></li>\n            </ul>\n          </div>\n        </div>\n        <div className='mt-8 text-xs text-slate-500'>© {new Date().getFullYear()} CaRo Lifting. Alle Rechte vorbehalten.</div>\n      </div>\n    </footer>\n  )\n}\n\n// UI helpers\nfunction Field({label, id, type='text', placeholder, required}){\n  return (\n    <label className='block text-sm'>\n      <span className='text-slate-700'>{label}</span>\n      <input id={id} name={id} type={type} required={required} placeholder={placeholder} className='mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 outline-none focus:ring-2 focus:ring-sky-200 focus:border-sky-400'/>\n    </label>\n  )\n}\nfunction Textarea({label, id, rows=4, placeholder}){\n  return (\n    <label className='block text-sm'>\n      <span className='text-slate-700'>{label}</span>\n      <textarea id={id} name={id} rows={rows} placeholder={placeholder} className='mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 outline-none focus:ring-2 focus:ring-sky-200 focus:border-sky-400'/>\n    </label>\n  )\n}\nfunction Select({label, id, options=[]}){\n  return (\n    <label className='block text-sm'>\n      <span className='text-slate-700'>{label}</span>\n      <select id={id} name={id} className='mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 outline-none focus:ring-2 focus:ring-sky-200 focus:border-sky-400 bg-white'>\n        {options.map(o => <option key={o} value={o}>{o}</option>)}\n      </select>\n    </label>\n  )\n}\nfunction Metric({label, value}){\n  return (\n    <div className='rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3'>\n      <dt className='text-xs text-slate-500'>{label}</dt>\n      <dd className='mt-1 font-semibold text-ink'>{value}</dd>\n    </div>\n  )\n}\n\nfunction Logo({className='h-8 w-8'}){\n  // Karo (Diamant) auf 4 Kästchen – modernes Logo\n  return (\n    <svg className={className} viewBox='0 0 64 64' xmlns='http://www.w3.org/2000/svg' aria-label='CaRo Lifting Logo'>\n      <defs>\n        <linearGradient id='g1' x1='0' y1='0' x2='1' y2='1'>\n          <stop offset='0%' stopColor='#38bdf8'/>\n          <stop offset='100%' stopColor='#0ea5e9'/>\n        </linearGradient>\n        <linearGradient id='g2' x1='1' y1='0' x2='0' y2='1'>\n          <stop offset='0%' stopColor='#93c5fd'/>\n          <stop offset='100%' stopColor='#3b82f6'/>\n        </linearGradient>\n      </defs>\n      <rect x='6' y='6' width='22' height='22' rx='4' fill='url(#g1)'/>\n      <rect x='36' y='6' width='22' height='22' rx='4' fill='url(#g2)'/>\n      <rect x='6' y='36' width='22' height='22' rx='4' fill='url(#g2)'/>\n      <rect x='36' y='36' width='22' height='22' rx='4' fill='url(#g1)'/>\n      <g transform='translate(32 32)'>\n        <rect x='-10' y='-10' width='20' height='20' transform='rotate(45)' rx='3' fill='#0f172a' opacity='0.9'/>\n      </g>\n    </svg>\n  )\n}\n\nfunction Burger({open}){\n  return (\n    <div className='grid gap-1.5'>\n      <span className={`block h-0.5 w-5 bg-slate-800 transition ${open ? 'translate-y-2 rotate-45' : ''}`}></span>\n      <span className={`block h-0.5 w-5 bg-slate-800 transition ${open ? 'opacity-0' : ''}`}></span>\n      <span className={`block h-0.5 w-5 bg-slate-800 transition ${open ? '-translate-y-2 -rotate-45' : ''}`}></span>\n    </div>\n  )\n}\nfunction Dot(){return <span className='inline-block h-1.5 w-1.5 rounded-full bg-sky-600'/>}\nfunction CheckIcon({className='h-4 w-4'}){\n  return (\n    <svg className={className} viewBox='0 0 20 20' fill='currentColor' aria-hidden='true'>\n      <path fillRule='evenodd' d='M16.704 5.29a1 1 0 010 1.42l-7.5 7.5a1 1 0 01-1.414 0l-3-3a1 1 0 011.414-1.42l2.293 2.294 6.793-6.794a1 1 0 011.414 0z' clipRule='evenodd'/>\n    </svg>\n  )\n}\nfunction ShieldIcon({className='h-6 w-6'}){return (<svg className={className} viewBox='0 0 24 24' fill='currentColor' aria-hidden><path d='M12 2l7 4v6c0 5-3.5 9.74-7 10-3.5-.26-7-5-7-10V6l7-4z'/></svg>)}\nfunction CubeIcon({className='h-6 w-6'}){return (<svg className={className} viewBox='0 0 24 24' fill='currentColor' aria-hidden><path d='M12 2l9 5-9 5-9-5 9-5zm0 8l9-5v10l-9 5-9-5V5l9 5z'/></svg>)}\nfunction WrenchIcon({className='h-6 w-6'}){return (<svg className={className} viewBox='0 0 24 24' fill='currentColor' aria-hidden><path d='M22 7.46l-5.88 5.88a4 4 0 11-5.66-5.66L16.34 1.8A6 6 0 1022 7.46zM6 22a2 2 0 110-4 2 2 0 010 4z'/></svg>)}\nfunction DocIcon({className='h-6 w-6'}){return (<svg className={className} viewBox='0 0 24 24' fill='currentColor' aria-hidden><path d='M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zM8 12h8v2H8v-2zm0 4h8v2H8v-2z'/></svg>)}\n\nfunction DemoIllustration(){\n  return (\n    <div className='relative h-full w-full'>\n      <div className='absolute left-0 right-0 top-4 mx-auto h-1 bg-slate-300 rounded'/>\n      <div className='absolute left-1/2 -translate-x-1/2 top-5 w-44 h-14 rounded-xl bg-sky-600/90 shadow'/>\n      <div className='absolute left-1/2 -translate-x-1/2 top-[84px] w-1 h-40 bg-slate-400'/>\n      <div className='absolute left-1/2 -translate-x-1/2 top-[250px] w-28 h-6 bg-slate-700 rounded'/>\n      <div className='absolute left-1/2 -translate-x-1/2 top-[256px] w-24 h-24 bg-slate-200 rounded-lg border border-slate-300 grid place-items-center text-slate-600 text-sm'>Last</div>\n      <div className='absolute bottom-4 right-4 text-xs text-slate-500'>Schematische Darstellung</div>\n    </div>\n  )\n}\n
+              <div>g.rosenfeld@caro-lifting.com</div>
+            </div>
+          </div>
+
+          <form
+            onSubmit={onSubmit}
+            action="https://formspree.io/f/YOUR_FORM_ID"
+            method="POST"
+            className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm"
+          >
+            <h2 className="text-lg font-semibold text-ink mb-4">
+              Richtpreis-Anfrage
+            </h2>
+            {sent ? (
+              <p className="text-green-600">Danke! Ihre Anfrage wurde gesendet.</p>
+            ) : (
+              <>
+                <label className="block mb-2 text-sm font-medium text-slate-700">
+                  Name
+                  <input
+                    type="text"
+                    name="name"
+                    required
+                    className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                  />
+                </label>
+                <label className="block mb-2 text-sm font-medium text-slate-700">
+                  E-Mail
+                  <input
+                    type="email"
+                    name="email"
+                    required
+                    className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                  />
+                </label>
+                <label className="block mb-4 text-sm font-medium text-slate-700">
+                  Nachricht
+                  <textarea
+                    name="message"
+                    rows="4"
+                    className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                    required
+                  ></textarea>
+                </label>
+                <button
+                  type="submit"
+                  className="inline-flex justify-center rounded-xl px-4 py-2 text-sm font-medium bg-[var(--brand)] text-white shadow hover:bg-[var(--brand-dark)]"
+                >
+                  Absenden
+                </button>
+              </>
+            )}
+          </form>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function Footer() {
+  return (
+    <footer className="border-t border-slate-200 bg-white py-6 text-center text-sm text-slate-500">
+      © {new Date().getFullYear()} CaRo Lifting – Castor & Rosenfeld
+    </footer>
+  )
+}
+
+function Logo() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 100 100"
+      className="h-8 w-8 text-sky-600"
+      fill="currentColor"
+    >
+      <rect x="10" y="10" width="35" height="35" rx="5" />
+      <rect x="55" y="55" width="35" height="35" rx="5" />
+    </svg>
+  )
+}
+
+export default App
