@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 
-const FORM_ENDPOINT = "https://formspree.io/f/xxxxxxxx" // <- DEIN Formspree-Link
+// TODO: Deinen echten Formspree-Endpoint eintragen
+const FORM_ENDPOINT = "https://formspree.io/f/xxxxxxxx"
 
 export default function App() {
   const [sent, setSent] = useState(false)
@@ -8,11 +9,9 @@ export default function App() {
     <>
       <Header />
       <main>
-        <Hero />
-        <Logos />
+        <Hero sent={sent} setSent={setSent} />
         <Leistungen />
         <Prozess />
-        <Kontakt sent={sent} setSent={setSent} />
       </main>
       <Footer />
     </>
@@ -24,12 +23,11 @@ function Header() {
   const [open, setOpen] = useState(false)
   const nav = [
     { href: "#leistungen", label: "Leistungen" },
-    { href: "#prozess", label: "Prozess" },
-    { href: "#kontakt", label: "Kontakt" },
+    { href: "#prozess",    label: "Prozess"    },
     { href: "/impressum.html", label: "Impressum" },
   ]
   return (
-    <header className="sticky top-0 z-40 bg-white/75 backdrop-blur supports-[backdrop-filter]:bg-white/60 border-b border-slate-200/60">
+    <header className="sticky top-0 z-40 bg-white/75 backdrop-blur border-b border-slate-200/60">
       <div className="container">
         <div className="flex h-16 items-center justify-between">
           <a href="/" className="flex items-center gap-3">
@@ -37,17 +35,15 @@ function Header() {
             <span className="font-semibold tracking-tight text-lg text-ink">CaRo Lifting</span>
           </a>
 
-        <nav className="hidden md:flex items-center gap-8">
-            {nav.map(n => (
-              <a key={n.href} href={n.href} className="link">{n.label}</a>
-            ))}
+          <nav className="hidden md:flex items-center gap-8">
+            {nav.map(n => <a key={n.href} href={n.href} className="link">{n.label}</a>)}
             <a href="#kontakt" className="btn">Richtpreis anfragen</a>
           </nav>
 
           <button
             aria-label="Menü"
             className="md:hidden p-2 rounded-lg border border-slate-300"
-            onClick={() => setOpen(!open)}
+            onClick={() => setOpen(v => !v)}
           >
             ☰
           </button>
@@ -57,9 +53,7 @@ function Header() {
           <div className="md:hidden border-t border-slate-200 py-3">
             <div className="flex flex-col gap-3">
               {nav.map(n => (
-                <a key={n.href} href={n.href} className="link" onClick={() => setOpen(false)}>
-                  {n.label}
-                </a>
+                <a key={n.href} href={n.href} className="link" onClick={() => setOpen(false)}>{n.label}</a>
               ))}
               <a href="#kontakt" className="btn" onClick={() => setOpen(false)}>Richtpreis anfragen</a>
             </div>
@@ -70,20 +64,22 @@ function Header() {
   )
 }
 
-/* ---------- Hero ---------- */
-function Hero() {
+/* ---------- Hero mit Formular rechts ---------- */
+function Hero({ sent, setSent }) {
   return (
-    <section className="relative overflow-hidden scroll-mt-24">
+    <section className="relative overflow-hidden scroll-mt-24" id="start">
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-sky-50 to-white" />
-      <div className="container py-18 lg:py-28 grid lg:grid-cols-2 gap-14 items-center">
+      <div className="container py-16 lg:py-24 grid lg:grid-cols-2 gap-12 items-start">
+        {/* Linke Seite: Claim + Kontaktdaten */}
         <div>
           <span className="badge">Made in Bavaria — Handhabungstechnik</span>
-          <h1 className="mt-6 text-4xl sm:text-5xl font-bold tracking-tight text-ink leading-tight">
-            Seil- & Handlingsgeräte von CaRo Lifting
+          <h1 className="mt-6 text-4xl lg:text-5xl font-bold tracking-tight text-ink leading-tight">
+            Seil- &amp; Handlingsgeräte von CaRo Lifting
           </h1>
           <p className="mt-5 lead max-w-xl">
-            Wir entwickeln, planen und fertigen ergonomische Handlingssysteme – von der Auslegung
-            über Konstruktion & Beschaffung bis Montage & Inbetriebnahme.
+            Wir entwickeln, planen und fertigen hochwertige Handlingssysteme für Industrie und
+            Gewerbe – individuell nach Kundenanforderung. Auslegung, Konstruktion, Beschaffung,
+            Montage &amp; Inbetriebnahme aus einer Hand.
           </p>
 
           <div className="card mt-7 text-sm text-slate-700">
@@ -91,33 +87,43 @@ function Hero() {
             <div>Am Bucklberg 10, 83620 Feldkirchen-Westerham</div>
             <div>info@caro-lifting.com</div>
           </div>
-
-          <div className="mt-7 flex flex-wrap gap-3">
-            <a href="#leistungen" className="btn">Leistungen ansehen</a>
-            <a href="#kontakt" className="btn-secondary">Richtpreis anfragen</a>
-          </div>
         </div>
 
-        <div className="card">
-          <h2 className="text-lg font-semibold mb-4">Warum CaRo Lifting?</h2>
-          <ul className="grid gap-3 text-slate-700">
-            <li>• Richtpreis in 24 Stunden</li>
-            <li>• Traglast/Hubweg nach Bedarf, Bauteilschutz</li>
-            <li>• Konstruktion, Beschaffung, Montage, Inbetriebnahme</li>
-            <li>• Dokumentation & CE-Unterstützung</li>
-          </ul>
+        {/* Rechte Seite: Formular */}
+        <div className="card" id="kontakt">
+          <h2 className="text-lg font-semibold mb-4">Richtpreis-Anfrage</h2>
+          {sent ? (
+            <p className="text-green-600">Danke! Ihre Anfrage wurde übermittelt.</p>
+          ) : (
+            <form
+              onSubmit={(e) => {
+                e.preventDefault()
+                const form = e.currentTarget
+                fetch(FORM_ENDPOINT, {
+                  method: "POST",
+                  body: new FormData(form),
+                  headers: { Accept: "application/json" },
+                })
+                  .then(r => r.ok ? setSent(true) : alert("Fehler beim Senden"))
+                  .catch(() => alert("Fehler beim Senden"))
+              }}
+              className="grid gap-4"
+            >
+              <Label title="Name">
+                <input name="name" required className="input" />
+              </Label>
+              <Label title="E-Mail">
+                <input type="email" name="email" required className="input" />
+              </Label>
+              <Label title="Nachricht">
+                <textarea name="message" rows="4" className="input" required />
+              </Label>
+              <input type="hidden" name="_subject" value="Neue Richtpreisanfrage – CaRo Lifting" />
+              <input type="text" name="_gotcha" style={{display:"none"}} tabIndex="-1" autoComplete="off" />
+              <button className="btn self-start" type="submit">Absenden</button>
+            </form>
+          )}
         </div>
-      </div>
-    </section>
-  )
-}
-
-/* ---------- Logos / Trust ---------- */
-function Logos() {
-  return (
-    <section className="container py-6">
-      <div className="flex flex-wrap items-center gap-6 opacity-70">
-        <MiniKaro /><span className="text-sm text-slate-500">Präzision • Ergonomie • Sicherheit</span>
       </div>
     </section>
   )
@@ -127,14 +133,14 @@ function Logos() {
 function Leistungen() {
   const items = [
     { title: "Seilzug-Handlingsgeräte", desc: "Ergonomische Entlastung in Montage & Logistik. Traglasten, Hubwege, Endschalter nach Bedarf." },
-    { title: "Greifer & Aufnahmen", desc: "Schnellwechsel, Dreh/Schwenk, Bauteilschutz – exakt auf Ihr Bauteil ausgelegt." },
-    { title: "Schienensysteme", desc: "Leichtlaufschienen und Ausleger für flexible Arbeitsbereiche." },
+    { title: "Greifer & Aufnahmen",     desc: "Schnellwechsel, Dreh/Schwenk, Bauteilschutz – exakt auf Ihr Bauteil ausgelegt." },
+    { title: "Schienensysteme",          desc: "Leichtlaufschienen und Ausleger für flexible Arbeitsbereiche." },
     { title: "Montage & Inbetriebnahme", desc: "Vor-Ort-Aufbau, Funktionsprüfung und Unterweisung." },
-    { title: "Dokumentation & CE", desc: "Risikobeurteilung, Betriebsanleitung, Kennzeichnung – normgerecht." },
-    { title: "Service", desc: "Wartung, Ersatzteile, Erweiterungen." },
+    { title: "Dokumentation & CE",       desc: "Risikobeurteilung, Betriebsanleitung, Kennzeichnung – normgerecht." },
+    { title: "Service",                  desc: "Wartung, Ersatzteile, Erweiterungen." },
   ]
   return (
-    <section id="leistungen" className="container py-18 scroll-mt-24">
+    <section id="leistungen" className="container py-16 scroll-mt-24">
       <h2 className="section">Leistungen</h2>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {items.map((it, i) => (
@@ -151,14 +157,14 @@ function Leistungen() {
 /* ---------- Prozess ---------- */
 function Prozess() {
   const steps = [
-    ["Anfrage", "Kurzbeschreibung, Traglast, Hubweg, Umgebung (Foto/Skizze ideal)."],
-    ["Richtpreis", "Binnen 24 h Preisindikator und Lieferzeit."],
-    ["Angebot", "Konzeptskizze, Lieferumfang, Termine."],
-    ["Umsetzung", "Konstruktion, Einkauf, Montage – alles aus einer Hand."],
-    ["Inbetriebnahme", "Vor-Ort, Dokumentation & Übergabe."],
+    ["Anfrage",       "Kurzbeschreibung, Traglast, Hubweg, Umgebung (Foto/Skizze ideal)."],
+    ["Richtpreis",    "Binnen 24 h Preisindikator und Lieferzeit."],
+    ["Angebot",       "Konzeptskizze, Lieferumfang, Termine."],
+    ["Umsetzung",     "Konstruktion, Einkauf, Montage – alles aus einer Hand."],
+    ["Inbetriebnahme","Vor-Ort, Dokumentation & Übergabe."],
   ]
   return (
-    <section id="prozess" className="container py-18 scroll-mt-24">
+    <section id="prozess" className="container py-16 scroll-mt-24">
       <h2 className="section">Projektablauf</h2>
       <ol className="grid lg:grid-cols-5 gap-4">
         {steps.map(([t, d], i) => (
@@ -169,60 +175,6 @@ function Prozess() {
           </li>
         ))}
       </ol>
-    </section>
-  )
-}
-
-/* ---------- Kontakt ---------- */
-function Kontakt({ sent, setSent }) {
-  return (
-    <section id="kontakt" className="container py-18 scroll-mt-24">
-      <div className="grid lg:grid-cols-2 gap-10 items-start">
-        <div>
-          <h2 className="section">Kontakt & Richtpreisanfrage</h2>
-          <p className="lead">Schicken Sie uns kurz die Eckdaten – wir melden uns schnell mit einem Richtpreis.</p>
-        </div>
-
-        <form
-          className="card"
-          onSubmit={(e) => {
-            e.preventDefault()
-            const form = e.target
-            fetch(FORM_ENDPOINT, {
-              method: "POST",
-              body: new FormData(form),
-              headers: { Accept: "application/json" },
-            })
-              .then((r) => (r.ok ? setSent(true) : alert("Fehler beim Senden")))
-              .catch(() => alert("Fehler beim Senden"))
-          }}
-        >
-          {sent ? (
-            <p className="text-green-600">Danke! Ihre Anfrage wurde übermittelt.</p>
-          ) : (
-            <>
-              <Label title="Name">
-                <input name="name" required className="input" />
-              </Label>
-              <Label title="E-Mail">
-                <input type="email" name="email" required className="input" />
-              </Label>
-              <Label title="Nachricht">
-                <textarea name="message" rows="4" required className="input" />
-              </Label>
-              <input type="hidden" name="_subject" value="Neue Richtpreisanfrage – CaRo Lifting" />
-              <input type="text" name="_gotcha" style={{ display: "none" }} tabIndex="-1" autoComplete="off" />
-              <button className="btn" type="submit">Absenden</button>
-            </>
-          )}
-        </form>
-      </div>
-
-      <div className="mt-10 text-sm text-slate-600">
-        <a className="link" href="/impressum.html">Impressum</a>
-        <span className="mx-2">•</span>
-        <a className="link" href="/datenschutz.html">Datenschutz</a>
-      </div>
     </section>
   )
 }
@@ -242,7 +194,7 @@ function Footer() {
 /* ---------- UI-Hilfen ---------- */
 function Label({ title, children }) {
   return (
-    <label className="block mb-4 text-sm font-medium text-slate-700">
+    <label className="block text-sm font-medium text-slate-700">
       {title}
       <div className="mt-1">{children}</div>
     </label>
@@ -258,9 +210,8 @@ function KaroLogo({ className = "h-8 w-8" }) {
           <stop offset="1" stopColor="#3b82f6" />
         </linearGradient>
       </defs>
-      <rect x="6" y="6" width="24" height="24" rx="4" fill="url(#g)" />
+      <rect x="6"  y="6"  width="24" height="24" rx="4" fill="url(#g)" />
       <rect x="34" y="34" width="24" height="24" rx="4" fill="url(#g)" />
     </svg>
   )
 }
-function MiniKaro() { return <KaroLogo className="h-6 w-6" /> }
