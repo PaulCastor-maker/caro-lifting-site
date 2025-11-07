@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 
-const FORM_ENDPOINT = "https://formspree.io/f/xxxxxxxx" // <- deinen Formspree-Link einsetzen
+const FORM_ENDPOINT = "https://formspree.io/f/xxxxxxxx" // <- DEIN Formspree-Link
 
 export default function App() {
   const [sent, setSent] = useState(false)
@@ -29,7 +29,7 @@ function Header() {
     { href: "/impressum.html", label: "Impressum" },
   ]
   return (
-    <header className="sticky top-0 z-40 bg-white/70 backdrop-blur border-b border-slate-200/60">
+    <header className="sticky top-0 z-40 bg-white/75 backdrop-blur supports-[backdrop-filter]:bg-white/60 border-b border-slate-200/60">
       <div className="container">
         <div className="flex h-16 items-center justify-between">
           <a href="/" className="flex items-center gap-3">
@@ -37,7 +37,7 @@ function Header() {
             <span className="font-semibold tracking-tight text-lg text-ink">CaRo Lifting</span>
           </a>
 
-          <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden md:flex items-center gap-8">
             {nav.map(n => (
               <a key={n.href} href={n.href} className="link">{n.label}</a>
             ))}
@@ -75,24 +75,24 @@ function Hero() {
   return (
     <section className="relative overflow-hidden scroll-mt-24">
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-sky-50 to-white" />
-      <div className="container py-16 lg:py-24 grid lg:grid-cols-2 gap-12 items-center">
+      <div className="container py-18 lg:py-28 grid lg:grid-cols-2 gap-14 items-center">
         <div>
           <span className="badge">Made in Bavaria — Handhabungstechnik</span>
-          <h1 className="mt-6 text-4xl lg:text-5xl font-bold tracking-tight text-ink">
-            Seil- &amp; Handlingsgeräte von CaRo Lifting
+          <h1 className="mt-6 text-4xl sm:text-5xl font-bold tracking-tight text-ink leading-tight">
+            Seil- & Handlingsgeräte von CaRo Lifting
           </h1>
-          <p className="mt-4 lead">
-            Wir entwickeln, planen und fertigen ergonomische Handlingssysteme – individuell nach
-            Ihren Anforderungen. Von der Auslegung über Konstruktion &amp; Beschaffung bis Montage &amp; Inbetriebnahme.
+          <p className="mt-5 lead max-w-xl">
+            Wir entwickeln, planen und fertigen ergonomische Handlingssysteme – von der Auslegung
+            über Konstruktion & Beschaffung bis Montage & Inbetriebnahme.
           </p>
 
-          <div className="card mt-6 text-sm text-slate-700">
+          <div className="card mt-7 text-sm text-slate-700">
             <div className="font-semibold text-ink">CaRo Lifting (i. Gr.)</div>
             <div>Am Bucklberg 10, 83620 Feldkirchen-Westerham</div>
             <div>info@caro-lifting.com</div>
           </div>
 
-          <div className="mt-6 flex flex-wrap gap-3">
+          <div className="mt-7 flex flex-wrap gap-3">
             <a href="#leistungen" className="btn">Leistungen ansehen</a>
             <a href="#kontakt" className="btn-secondary">Richtpreis anfragen</a>
           </div>
@@ -101,10 +101,10 @@ function Hero() {
         <div className="card">
           <h2 className="text-lg font-semibold mb-4">Warum CaRo Lifting?</h2>
           <ul className="grid gap-3 text-slate-700">
-            <li>• Richtpreis in 24 h</li>
+            <li>• Richtpreis in 24 Stunden</li>
             <li>• Traglast/Hubweg nach Bedarf, Bauteilschutz</li>
             <li>• Konstruktion, Beschaffung, Montage, Inbetriebnahme</li>
-            <li>• Dokumentation &amp; CE-Unterstützung</li>
+            <li>• Dokumentation & CE-Unterstützung</li>
           </ul>
         </div>
       </div>
@@ -134,7 +134,7 @@ function Leistungen() {
     { title: "Service", desc: "Wartung, Ersatzteile, Erweiterungen." },
   ]
   return (
-    <section id="leistungen" className="container py-16 scroll-mt-24">
+    <section id="leistungen" className="container py-18 scroll-mt-24">
       <h2 className="section">Leistungen</h2>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {items.map((it, i) => (
@@ -158,7 +158,7 @@ function Prozess() {
     ["Inbetriebnahme", "Vor-Ort, Dokumentation & Übergabe."],
   ]
   return (
-    <section id="prozess" className="container py-16 scroll-mt-24">
+    <section id="prozess" className="container py-18 scroll-mt-24">
       <h2 className="section">Projektablauf</h2>
       <ol className="grid lg:grid-cols-5 gap-4">
         {steps.map(([t, d], i) => (
@@ -176,7 +176,7 @@ function Prozess() {
 /* ---------- Kontakt ---------- */
 function Kontakt({ sent, setSent }) {
   return (
-    <section id="kontakt" className="container py-16 scroll-mt-24">
+    <section id="kontakt" className="container py-18 scroll-mt-24">
       <div className="grid lg:grid-cols-2 gap-10 items-start">
         <div>
           <h2 className="section">Kontakt & Richtpreisanfrage</h2>
@@ -239,7 +239,7 @@ function Footer() {
   )
 }
 
-/* ---------- kleine UI-Hilfen ---------- */
+/* ---------- UI-Hilfen ---------- */
 function Label({ title, children }) {
   return (
     <label className="block mb-4 text-sm font-medium text-slate-700">
@@ -263,7 +263,4 @@ function KaroLogo({ className = "h-8 w-8" }) {
     </svg>
   )
 }
-
-function MiniKaro() {
-  return <KaroLogo className="h-6 w-6" />
-}
+function MiniKaro() { return <KaroLogo className="h-6 w-6" /> }
