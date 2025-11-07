@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 
-const FORM_ENDPOINT = "https://formspree.io/f/xxxxxxxx" // <- DEIN Formspree-Link
+const FORM_ENDPOINT = "https://formspree.io/f/xxxxxxxx" // <- deinen Formspree-Link einsetzen
 
 export default function App() {
   const [sent, setSent] = useState(false)
@@ -73,26 +73,23 @@ function Header() {
 /* ---------- Hero ---------- */
 function Hero() {
   return (
-    <section className="relative overflow-hidden">
+    <section className="relative overflow-hidden scroll-mt-24">
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-sky-50 to-white" />
       <div className="container py-16 lg:py-24 grid lg:grid-cols-2 gap-12 items-center">
         <div>
           <span className="badge">Made in Bavaria — Handhabungstechnik</span>
           <h1 className="mt-6 text-4xl lg:text-5xl font-bold tracking-tight text-ink">
-            Seil- & Handlingsgeräte von CaRo Lifting
+            Seil- &amp; Handlingsgeräte von CaRo Lifting
           </h1>
           <p className="mt-4 lead">
             Wir entwickeln, planen und fertigen ergonomische Handlingssysteme – individuell nach
-            Ihren Anforderungen. Von der Auslegung über Konstruktion und Beschaffung bis Montage &
-            Inbetriebnahme.
+            Ihren Anforderungen. Von der Auslegung über Konstruktion &amp; Beschaffung bis Montage &amp; Inbetriebnahme.
           </p>
 
           <div className="card mt-6 text-sm text-slate-700">
             <div className="font-semibold text-ink">CaRo Lifting (i. Gr.)</div>
             <div>Am Bucklberg 10, 83620 Feldkirchen-Westerham</div>
             <div>info@caro-lifting.com</div>
-            <div>p.castor@caro-lifting.com</div>
-            <div>g.rosenfeld@caro-lifting.com</div>
           </div>
 
           <div className="mt-6 flex flex-wrap gap-3">
@@ -107,7 +104,7 @@ function Hero() {
             <li>• Richtpreis in 24 h</li>
             <li>• Traglast/Hubweg nach Bedarf, Bauteilschutz</li>
             <li>• Konstruktion, Beschaffung, Montage, Inbetriebnahme</li>
-            <li>• Dokumentation & CE-Unterstützung</li>
+            <li>• Dokumentation &amp; CE-Unterstützung</li>
           </ul>
         </div>
       </div>
@@ -137,7 +134,7 @@ function Leistungen() {
     { title: "Service", desc: "Wartung, Ersatzteile, Erweiterungen." },
   ]
   return (
-    <section id="leistungen" className="container py-16">
+    <section id="leistungen" className="container py-16 scroll-mt-24">
       <h2 className="section">Leistungen</h2>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {items.map((it, i) => (
@@ -161,7 +158,7 @@ function Prozess() {
     ["Inbetriebnahme", "Vor-Ort, Dokumentation & Übergabe."],
   ]
   return (
-    <section id="prozess" className="container py-16">
+    <section id="prozess" className="container py-16 scroll-mt-24">
       <h2 className="section">Projektablauf</h2>
       <ol className="grid lg:grid-cols-5 gap-4">
         {steps.map(([t, d], i) => (
@@ -179,7 +176,7 @@ function Prozess() {
 /* ---------- Kontakt ---------- */
 function Kontakt({ sent, setSent }) {
   return (
-    <section id="kontakt" className="container py-16">
+    <section id="kontakt" className="container py-16 scroll-mt-24">
       <div className="grid lg:grid-cols-2 gap-10 items-start">
         <div>
           <h2 className="section">Kontakt & Richtpreisanfrage</h2>
@@ -242,7 +239,7 @@ function Footer() {
   )
 }
 
-/* ---------- Kleine UI-Bausteine ---------- */
+/* ---------- kleine UI-Hilfen ---------- */
 function Label({ title, children }) {
   return (
     <label className="block mb-4 text-sm font-medium text-slate-700">
