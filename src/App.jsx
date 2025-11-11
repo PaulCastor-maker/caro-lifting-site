@@ -68,11 +68,15 @@ function Header() {
 }
 
 /* ---------- Hero (ohne Formular, mit CTA zu #kontakt) ---------- */
+/* ---------- Hero (mit Bayern-Herz-Hintergrund) ---------- */
 function Hero() {
   return (
     <section className="relative overflow-hidden scroll-mt-24">
-      {/* dunkelblauer Verlauf */}
+      {/* 1) Dunkelblauer Verlauf im Hintergrund */}
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-[#0b2a66] via-[#0b2a66]/10 to-white" />
+      {/* 2) Bayern-Herz-Wasserzeichen darüber (liegt unter dem Inhalt) */}
+      <div className="absolute inset-0 -z-10 bg-bavaria" />
+
       <div className="container py-18 lg:py-28 grid lg:grid-cols-2 gap-14 items-start">
         <div>
           <span className="badge">Made in Bavaria — Handhabungstechnik</span>
@@ -95,7 +99,7 @@ function Hero() {
           </div>
         </div>
 
-        {/* Statt zweitem Formular: kompakter CTA-Teaser */}
+        {/* Kompakter CTA statt zweitem Formular */}
         <div className="card">
           <h2 className="text-lg font-semibold mb-2">Richtpreis in 24&nbsp;Stunden</h2>
           <p className="text-slate-600 mb-4">
@@ -107,6 +111,7 @@ function Hero() {
     </section>
   )
 }
+
 
 /* ---------- Nutzen ---------- */
 function Nutzen() {
