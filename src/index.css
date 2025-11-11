@@ -68,3 +68,21 @@ summary:focus-visible,
   outline-offset: 2px;
   border-radius: 8px; /* sieht meist besser aus */
 }
+/* Dezentes Bayern-Herz als Hintergrund-Wasserzeichen */
+.bg-bavaria {
+  background-image: url('/bavaria-heart.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: min(900px, 80vmin); /* skaliert responsiv */
+  opacity: .18;                        /* Intensität des Overlays */
+  pointer-events: none;                /* klickt nicht "drüber" */
+}
+
+/* Auf kleineren Screens etwas zurücknehmen */
+@media (max-width: 640px) {
+  .bg-bavaria {
+    background-size: 85vw;
+    opacity: .14;
+  }
+}
+
