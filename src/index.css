@@ -14,7 +14,7 @@ body {
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Inter, Roboto,
     "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
 }
-
+html { scroll-behavior: smooth; }
 .container { @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8; }
 
 .badge {
