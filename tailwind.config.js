@@ -4,10 +4,10 @@ export default {
   theme: {
     extend: {
       colors: {
-        ink: "#0f172a",
-        brand: { DEFAULT: "#0ea5e9", dark: "#0284c7" },
+        ink: "#0b1220",
+        brand: { DEFAULT: "#0b5bd3", dark: "#0843a6" } // Dunkelblau
       },
-      boxShadow: { soft: "0 8px 28px rgba(2,132,199,.08)" },
+      boxShadow: { soft: "0 8px 28px rgba(11,91,211,.10)" }
     },
   },
   plugins: [],
