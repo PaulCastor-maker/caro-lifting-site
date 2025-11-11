@@ -96,7 +96,7 @@ function Hero({ sent, setSent }) {
         </div>
 
         {/* Formular rechts */}
-        <div className="card" id="kontakt">
+        <div className="card"> 
           <h2 className="text-lg font-semibold mb-4">Richtpreis-Anfrage</h2>
           {sent ? (
             <p className="text-green-600">Danke! Ihre Anfrage wurde übermittelt.</p>
