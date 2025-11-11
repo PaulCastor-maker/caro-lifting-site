@@ -51,3 +51,20 @@ p.lead { @apply text-slate-700 leading-relaxed; }
 
 /* Kleine Helfer, damit SVG-Logos nie abgeschnitten wirken */
 svg { shape-rendering: geometricPrecision; text-rendering: geometricPrecision; }
+
+/* Zeige einen gut sichtbaren Fokus-Ring – aber nur bei Tastatur-Nutzung */
+a, button, input, textarea, select, summary, [role="button"] {
+  outline: none; /* Standard ausblenden */
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+summary:focus-visible,
+[role="button"]:focus-visible {
+  outline: 3px solid rgba(11, 91, 211, .45); /* dein Blau */
+  outline-offset: 2px;
+  border-radius: 8px; /* sieht meist besser aus */
+}
