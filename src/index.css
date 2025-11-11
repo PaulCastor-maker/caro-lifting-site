@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 :root {
-  --brand: #0ea5e9;
-  --brand-dark: #0284c7;
-  --ink: #0f172a;
+  --brand: #0b5bd3;     /* dunkelblau */
+  --brand-dark: #0843a6;/* noch dunkler */
+  --ink: #0b1220;       /* sehr dunkles Blau/Schwarz */
 }
 html, body, #root { height: 100%; }
 body {
@@ -19,7 +19,7 @@ body {
 
 .badge {
   @apply inline-flex items-center gap-2 text-xs font-semibold tracking-wider uppercase
-         text-sky-700 bg-sky-100 rounded-full px-3 py-1;
+         text-sky-50 bg-brand rounded-full px-3 py-1;
 }
 
 .btn {
@@ -29,20 +29,25 @@ body {
 .btn:hover { background: var(--brand-dark); }
 
 .btn-secondary {
-  @apply inline-flex justify-center rounded-xl px-4 py-2 text-sm font-medium border border-sky-200 text-sky-700;
-  background: #fff;
+  @apply inline-flex justify-center rounded-xl px-4 py-2 text-sm font-medium border text-brand border-brand/30 bg-white;
 }
-.btn-secondary:hover { @apply border-sky-300 bg-sky-50; }
+.btn-secondary:hover { @apply border-brand/50 bg-sky-50; }
 
 .link { @apply text-sm text-slate-700 hover:text-ink transition; }
 
-.card { @apply rounded-2xl border border-slate-200 bg-white p-6; box-shadow: 0 8px 28px rgba(2,132,199,.08); }
+.card {
+  @apply rounded-2xl border border-slate-200 bg-white p-6;
+  box-shadow: 0 8px 28px rgba(11,91,211,.10);
+}
 
 h2.section { @apply text-2xl font-semibold tracking-tight mb-4; }
-p.lead { @apply text-slate-600 leading-relaxed; }
+p.lead { @apply text-slate-700 leading-relaxed; }
 
 .input { @apply w-full rounded-lg border border-slate-300 px-3 py-2 text-sm; }
-.input:focus { @apply outline-none ring-2 ring-sky-200 border-sky-300; }
+.input:focus { @apply outline-none ring-2 ring-brand/20 border-brand/40; }
 
-.scroll-mt-24 { scroll-margin-top: 6rem; } /* für Sticky-Header */
+.scroll-mt-24 { scroll-margin-top: 6rem; } /* Sticky-Header Offset */
 .py-18 { padding-top: 4.5rem; padding-bottom: 4.5rem; }
+
+/* Kleine Helfer, damit SVG-Logos nie abgeschnitten wirken */
+svg { shape-rendering: geometricPrecision; text-rendering: geometricPrecision; }
