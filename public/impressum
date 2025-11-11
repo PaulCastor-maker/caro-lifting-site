@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Impressum – CaRo Lifting</title>
+  <style>
+    :root{--ink:#0b1220;--brand:#0b5bd3}
+    *{box-sizing:border-box} body{margin:0;font:16px/1.6 ui-sans-serif,system-ui,-apple-system,Segoe UI,Inter,Roboto,Arial;color:var(--ink)}
+    .wrap{max-width:900px;margin:40px auto;padding:0 20px}
+    a{color:var(--brand);text-decoration:none} a:hover{text-decoration:underline}
+    h1{font-size:32px;margin:.2em 0 .6em} h2{font-size:20px;margin:1.2em 0 .4em}
+    .card{border:1px solid #e5e7eb;border-radius:14px;padding:18px;background:#fff;box-shadow:0 8px 28px rgba(11,91,211,.06)}
+    .muted{color:#64748b}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <p><a href="/">← Zur Startseite</a></p>
+    <h1>Impressum</h1>
+
+    <div class="card">
+      <p><strong>CaRo Lifting (i. Gr.)</strong></p>
+      <p><strong>Adresse:</strong> wird nachgetragen</p>
+      <p><strong>E-Mail:</strong> info@caro-lifting.com</p>
+      <p><strong>Vertretungsberechtigt:</strong> Paul Castor, Gerrit Rosenfeld</p>
+      <p><strong>Inhaltlich Verantwortlich gem. § 18 Abs. 2 MStV:</strong> Paul Castor</p>
+    </div>
+
+    <h2>Haftung für Inhalte</h2>
+    <p class="muted">
+      Die Inhalte dieser Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit
+      und Aktualität der Inhalte übernehmen wir keine Gewähr (§ 7 Abs.1 TMG).
+    </p>
+
+    <h2>Haftung für Links</h2>
+    <p class="muted">
+      Unser Angebot enthält Links zu externen Websites, auf deren Inhalte wir keinen Einfluss haben.
+      Deshalb können wir für diese fremden Inhalte keine Gewähr übernehmen.
+    </p>
+
+    <h2>Urheberrecht</h2>
+    <p class="muted">
+      Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem
+      deutschen Urheberrecht. Vervielfältigung, Bearbeitung und Verwertung außerhalb der Grenzen
+      des Urheberrechts bedürfen der schriftlichen Zustimmung der jeweiligen Rechteinhaber.
+    </p>
+  </div>
+</body>
+</html>
