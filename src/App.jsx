@@ -271,3 +271,13 @@ function KaroLogo({ className = "h-8 w-8" }) {
     </svg>
   )
 }
+function Hero() {
+  return (
+    <section className="relative overflow-hidden scroll-mt-24">
+      {/* dunkelblauer Verlauf */}
+      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-[#0b2a66] via-[#0b2a66]/10 to-white" />
+      {/* >>> HIER das Bayern-Herz-Wasserzeichen einblenden <<< */}
+      <div className="absolute inset-0 -z-10 bg-bavaria" />
+      
+      <div className="container py-18 lg:py-28 grid lg:grid-cols-2 gap-14 items-start">
+        {/* ...restlicher Hero-Inhalt bleibt unverändert... */}
