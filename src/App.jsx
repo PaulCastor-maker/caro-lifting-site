@@ -9,7 +9,7 @@ export default function App() {
     <>
       <Header />
       <main>
-        <Hero sent={sent} setSent={setSent} />
+        <Hero />
         <Nutzen />
         <Leistungen />
         <Prozess />
@@ -67,11 +67,11 @@ function Header() {
   )
 }
 
-/* ---------- Hero ---------- */
-function Hero({ sent, setSent }) {
+/* ---------- Hero (ohne Formular, mit CTA zu #kontakt) ---------- */
+function Hero() {
   return (
     <section className="relative overflow-hidden scroll-mt-24">
-      {/* dunkles Blau -> weich nach Weiß */}
+      {/* dunkelblauer Verlauf */}
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-[#0b2a66] via-[#0b2a66]/10 to-white" />
       <div className="container py-18 lg:py-28 grid lg:grid-cols-2 gap-14 items-start">
         <div>
@@ -83,9 +83,9 @@ function Hero({ sent, setSent }) {
             Ergonomische Handlingssysteme: Auslegung, Konstruktion, Beschaffung, Montage &amp; Inbetriebnahme – aus einer Hand.
           </p>
 
+          {/* Info-Karte ohne Adresse */}
           <div className="card mt-7 text-sm text-slate-700">
             <div className="font-semibold text-ink">CaRo Lifting (i. Gr.)</div>
-            <div><span className="text-slate-500">Adresse:</span> wird nachgetragen</div>
             <div><span className="text-slate-500">E-Mail:</span> info@caro-lifting.com</div>
           </div>
 
@@ -95,34 +95,13 @@ function Hero({ sent, setSent }) {
           </div>
         </div>
 
-        {/* Formular rechts */}
-        <div className="card"> 
-          <h2 className="text-lg font-semibold mb-4">Richtpreis-Anfrage</h2>
-          {sent ? (
-            <p className="text-green-600">Danke! Ihre Anfrage wurde übermittelt.</p>
-          ) : (
-            <form
-              onSubmit={(e) => {
-                e.preventDefault()
-                const form = e.currentTarget
-                fetch(FORM_ENDPOINT, {
-                  method: "POST",
-                  body: new FormData(form),
-                  headers: { Accept: "application/json" },
-                })
-                  .then(r => r.ok ? setSent(true) : alert("Fehler beim Senden"))
-                  .catch(() => alert("Fehler beim Senden"))
-              }}
-              className="grid gap-4"
-            >
-              <Label title="Name"><input name="name" required className="input" /></Label>
-              <Label title="E-Mail"><input type="email" name="email" required className="input" /></Label>
-              <Label title="Nachricht"><textarea name="message" rows="4" required className="input" /></Label>
-              <input type="hidden" name="_subject" value="Neue Richtpreisanfrage – CaRo Lifting" />
-              <input type="text" name="_gotcha" style={{display:"none"}} tabIndex="-1" autoComplete="off" />
-              <button className="btn self-start" type="submit">Absenden</button>
-            </form>
-          )}
+        {/* Statt zweitem Formular: kompakter CTA-Teaser */}
+        <div className="card">
+          <h2 className="text-lg font-semibold mb-2">Richtpreis in 24&nbsp;Stunden</h2>
+          <p className="text-slate-600 mb-4">
+            Schicken Sie uns kurz die Eckdaten – wir melden uns schnell mit einer ersten Einschätzung.
+          </p>
+          <a href="#kontakt" className="btn">Zum Anfrageformular</a>
         </div>
       </div>
     </section>
@@ -201,17 +180,17 @@ function Prozess() {
   )
 }
 
-/* ---------- Kontakt (zweite Ankerstelle) ---------- */
+/* ---------- Kontakt (einziges Formular) ---------- */
 function Kontakt({ sent, setSent }) {
   return (
     <section id="kontakt" className="container py-18 scroll-mt-24">
       <div className="grid lg:grid-cols-2 gap-10 items-start">
         <div>
           <h2 className="section">Kontakt</h2>
-          <p className="lead">Schicken Sie uns kurz die Eckdaten – wir melden uns schnell mit einem Richtpreis.</p>
+          <p className="lead">Senden Sie uns kurz die Eckdaten – wir melden uns schnell mit einem Richtpreis.</p>
           <div className="card mt-6 text-sm text-slate-700">
             <div><span className="text-slate-500">E-Mail:</span> info@caro-lifting.com</div>
-            <div><span className="text-slate-500">Adresse:</span> wird nachgetragen</div>
+            {/* keine Adresse auf der Startseite */}
           </div>
         </div>
 
@@ -275,7 +254,7 @@ function Label({ title, children }) {
   )
 }
 
-/* Vollständiges 4-Kästchen-Karo, zuverlässig skaliert */
+/* 4-Kästchen-Logo, vollständig und sauber skaliert */
 function KaroLogo({ className = "h-8 w-8" }) {
   return (
     <svg viewBox="0 0 64 64" className={className} role="img" aria-label="CaRo Logo" preserveAspectRatio="xMidYMid meet">
