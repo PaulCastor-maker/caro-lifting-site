@@ -12,10 +12,7 @@ export default function App() {
         <Hero sent={sent} setSent={setSent} />
         <Nutzen />
         <Leistungen />
-        <Branchen />
-        <Referenzen />
         <Prozess />
-        <CTA />
         <Kontakt sent={sent} setSent={setSent} />
       </main>
       <Footer />
@@ -28,13 +25,12 @@ function Header() {
   const [open, setOpen] = useState(false)
   const nav = [
     { href: "#leistungen", label: "Leistungen" },
-    { href: "#branchen", label: "Branchen" },
-    { href: "#prozess", label: "Prozess" },
-    { href: "#kontakt", label: "Kontakt" },
+    { href: "#prozess",    label: "Prozess" },
+    { href: "#kontakt",    label: "Kontakt" },
     { href: "/impressum.html", label: "Impressum" },
   ]
   return (
-    <header className="sticky top-0 z-40 bg-white/75 backdrop-blur border-b border-slate-200/60">
+    <header className="sticky top-0 z-40 bg-white/80 backdrop-blur border-b border-slate-200/60">
       <div className="container">
         <div className="flex h-16 items-center justify-between">
           <a href="/" className="flex items-center gap-3">
@@ -71,11 +67,12 @@ function Header() {
   )
 }
 
-/* ---------- Hero mit Formular ---------- */
+/* ---------- Hero ---------- */
 function Hero({ sent, setSent }) {
   return (
-    <section className="relative overflow-hidden scroll-mt-24" id="start">
-      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-sky-50 to-white" />
+    <section className="relative overflow-hidden scroll-mt-24">
+      {/* dunkles Blau -> weich nach Weiß */}
+      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-[#0b2a66] via-[#0b2a66]/10 to-white" />
       <div className="container py-18 lg:py-28 grid lg:grid-cols-2 gap-14 items-start">
         <div>
           <span className="badge">Made in Bavaria — Handhabungstechnik</span>
@@ -98,6 +95,7 @@ function Hero({ sent, setSent }) {
           </div>
         </div>
 
+        {/* Formular rechts */}
         <div className="card" id="kontakt">
           <h2 className="text-lg font-semibold mb-4">Richtpreis-Anfrage</h2>
           {sent ? (
@@ -131,7 +129,7 @@ function Hero({ sent, setSent }) {
   )
 }
 
-/* ---------- Nutzen (USP) ---------- */
+/* ---------- Nutzen ---------- */
 function Nutzen() {
   const usps = [
     ["Richtpreis in 24 h", "Schnelle Machbarkeit & Preisindikator."],
@@ -157,11 +155,11 @@ function Nutzen() {
 function Leistungen() {
   const items = [
     { title: "Seilzug-Handlingsgeräte", desc: "Ergonomische Entlastung in Montage & Logistik. Traglast, Hubweg, Endschalter nach Bedarf." },
-    { title: "Greifer & Aufnahmen", desc: "Schnellwechsel, Dreh/Schwenk, Bauteilschutz – exakt auf Ihr Bauteil ausgelegt." },
-    { title: "Schienensysteme", desc: "Leichtlaufschienen und Ausleger für flexible Arbeitsbereiche." },
+    { title: "Greifer & Aufnahmen",     desc: "Schnellwechsel, Dreh/Schwenk, Bauteilschutz – exakt auf Ihr Bauteil ausgelegt." },
+    { title: "Schienensysteme",          desc: "Leichtlaufschienen und Ausleger für flexible Arbeitsbereiche." },
     { title: "Montage & Inbetriebnahme", desc: "Vor-Ort-Aufbau, Funktionsprüfung, Unterweisung." },
-    { title: "Dokumentation & CE", desc: "Risikobeurteilung, Betriebsanleitung, Kennzeichnung." },
-    { title: "Service", desc: "Wartung, Ersatzteile, Erweiterungen." },
+    { title: "Dokumentation & CE",       desc: "Risikobeurteilung, Betriebsanleitung, Kennzeichnung." },
+    { title: "Service",                  desc: "Wartung, Ersatzteile, Erweiterungen." },
   ]
   return (
     <section id="leistungen" className="container py-18 scroll-mt-24">
@@ -178,43 +176,14 @@ function Leistungen() {
   )
 }
 
-/* ---------- Branchen ---------- */
-function Branchen() {
-  const items = [
-    "Automotive", "Maschinenbau", "Elektronik", "Logistik", "Medizintechnik", "Allgemeine Industrie",
-  ]
-  return (
-    <section id="branchen" className="container py-18 scroll-mt-24">
-      <h2 className="section">Branchen</h2>
-      <div className="grid sm:grid-cols-3 lg:grid-cols-6 gap-4">
-        {items.map((b, i) => (
-          <div key={i} className="card text-center py-6">{b}</div>
-        ))}
-      </div>
-    </section>
-  )
-}
-
-/* ---------- Referenzen (Logos Placeholder) ---------- */
-function Referenzen() {
-  return (
-    <section className="container py-12">
-      <div className="text-sm text-slate-500 mb-4">Ausgewählte Referenzen / Partner (Auszug)</div>
-      <div className="flex flex-wrap items-center gap-6 opacity-70">
-        <MiniKaro /><MiniKaro /><MiniKaro /><MiniKaro />
-      </div>
-    </section>
-  )
-}
-
 /* ---------- Prozess ---------- */
 function Prozess() {
   const steps = [
-    ["Anfrage", "Kurzbeschreibung, Traglast, Hubweg, Umgebung (Foto/Skizze ideal)."],
-    ["Richtpreis", "Binnen 24 h Preisindikator & Lieferzeit."],
-    ["Angebot", "Konzeptskizze, Lieferumfang, Termine."],
-    ["Umsetzung", "Konstruktion, Einkauf, Montage."],
-    ["Inbetriebnahme", "Vor-Ort, Dokumentation & Übergabe."],
+    ["Anfrage",       "Kurzbeschreibung, Traglast, Hubweg, Umgebung (Foto/Skizze ideal)."],
+    ["Richtpreis",    "Binnen 24 h Preisindikator & Lieferzeit."],
+    ["Angebot",       "Konzeptskizze, Lieferumfang, Termine."],
+    ["Umsetzung",     "Konstruktion, Einkauf, Montage."],
+    ["Inbetriebnahme","Vor-Ort, Dokumentation & Übergabe."],
   ]
   return (
     <section id="prozess" className="container py-18 scroll-mt-24">
@@ -228,18 +197,6 @@ function Prozess() {
           </li>
         ))}
       </ol>
-    </section>
-  )
-}
-
-/* ---------- CTA-Streifen ---------- */
-function CTA() {
-  return (
-    <section className="bg-gradient-to-r from-sky-50 to-white border-y border-slate-200">
-      <div className="container py-12 flex flex-col md:flex-row items-center justify-between gap-4">
-        <div className="text-lg font-semibold">Projektidee? – Wir geben in 24 h einen Richtpreis.</div>
-        <a href="#kontakt" className="btn">Jetzt anfragen</a>
-      </div>
     </section>
   )
 }
@@ -294,8 +251,11 @@ function Kontakt({ sent, setSent }) {
 function Footer() {
   return (
     <footer className="border-t border-slate-200 py-6">
-      <div className="container text-sm text-slate-500 flex items-center justify-between">
+      <div className="container text-sm text-slate-500 flex flex-col md:flex-row gap-3 md:gap-0 items-center justify-between">
         <span>© {new Date().getFullYear()} CaRo Lifting – Castor & Rosenfeld</span>
+        <span className="opacity-80">
+          Made with <span aria-hidden="true">❤</span> in Bavaria
+        </span>
         <div className="flex items-center gap-4">
           <a className="link" href="/impressum.html">Impressum</a>
           <a className="link" href="/datenschutz.html">Datenschutz</a>
@@ -315,18 +275,20 @@ function Label({ title, children }) {
   )
 }
 
+/* Vollständiges 4-Kästchen-Karo, zuverlässig skaliert */
 function KaroLogo({ className = "h-8 w-8" }) {
   return (
-    <svg viewBox="0 0 64 64" className={className} aria-hidden="true">
+    <svg viewBox="0 0 64 64" className={className} role="img" aria-label="CaRo Logo" preserveAspectRatio="xMidYMid meet">
       <defs>
         <linearGradient id="g" x1="0" x2="1">
-          <stop offset="0" stopColor="#38bdf8" />
-          <stop offset="1" stopColor="#3b82f6" />
+          <stop offset="0" stopColor="#0b5bd3"/>
+          <stop offset="1" stopColor="#0843a6"/>
         </linearGradient>
       </defs>
-      <rect x="6" y="6" width="24" height="24" rx="4" fill="url(#g)" />
-      <rect x="34" y="34" width="24" height="24" rx="4" fill="url(#g)" />
+      <rect x="6"  y="6"  width="22" height="22" rx="5" fill="url(#g)"/>
+      <rect x="36" y="6"  width="22" height="22" rx="5" fill="url(#g)"/>
+      <rect x="6"  y="36" width="22" height="22" rx="5" fill="url(#g)"/>
+      <rect x="36" y="36" width="22" height="22" rx="5" fill="url(#g)"/>
     </svg>
   )
 }
-function MiniKaro() { return <KaroLogo className="h-6 w-6" /> }
