@@ -10,8 +10,13 @@ export default function App() {
       <Header />
       <main>
         <Hero sent={sent} setSent={setSent} />
+        <Nutzen />
         <Leistungen />
+        <Branchen />
+        <Referenzen />
         <Prozess />
+        <CTA />
+        <Kontakt sent={sent} setSent={setSent} />
       </main>
       <Footer />
     </>
@@ -23,7 +28,9 @@ function Header() {
   const [open, setOpen] = useState(false)
   const nav = [
     { href: "#leistungen", label: "Leistungen" },
-    { href: "#prozess",    label: "Prozess"    },
+    { href: "#branchen", label: "Branchen" },
+    { href: "#prozess", label: "Prozess" },
+    { href: "#kontakt", label: "Kontakt" },
     { href: "/impressum.html", label: "Impressum" },
   ]
   return (
@@ -64,32 +71,33 @@ function Header() {
   )
 }
 
-/* ---------- Hero mit Formular rechts ---------- */
+/* ---------- Hero mit Formular ---------- */
 function Hero({ sent, setSent }) {
   return (
     <section className="relative overflow-hidden scroll-mt-24" id="start">
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-sky-50 to-white" />
-      <div className="container py-16 lg:py-24 grid lg:grid-cols-2 gap-12 items-start">
-        {/* Linke Seite: Claim + Kontaktdaten */}
+      <div className="container py-18 lg:py-28 grid lg:grid-cols-2 gap-14 items-start">
         <div>
           <span className="badge">Made in Bavaria — Handhabungstechnik</span>
-          <h1 className="mt-6 text-4xl lg:text-5xl font-bold tracking-tight text-ink leading-tight">
-            Seil- &amp; Handlingsgeräte von CaRo Lifting
+          <h1 className="mt-6 text-4xl sm:text-5xl font-bold tracking-tight text-ink leading-tight">
+            Seil- &amp; Handlingsgeräte für Industrie &amp; Gewerbe
           </h1>
           <p className="mt-5 lead max-w-xl">
-            Wir entwickeln, planen und fertigen hochwertige Handlingssysteme für Industrie und
-            Gewerbe – individuell nach Kundenanforderung. Auslegung, Konstruktion, Beschaffung,
-            Montage &amp; Inbetriebnahme aus einer Hand.
+            Ergonomische Handlingssysteme: Auslegung, Konstruktion, Beschaffung, Montage &amp; Inbetriebnahme – aus einer Hand.
           </p>
 
           <div className="card mt-7 text-sm text-slate-700">
             <div className="font-semibold text-ink">CaRo Lifting (i. Gr.)</div>
-            <div>Am Bucklberg 10, 83620 Feldkirchen-Westerham</div>
-            <div>info@caro-lifting.com</div>
+            <div><span className="text-slate-500">Adresse:</span> wird nachgetragen</div>
+            <div><span className="text-slate-500">E-Mail:</span> info@caro-lifting.com</div>
+          </div>
+
+          <div className="mt-7 flex flex-wrap gap-3">
+            <a href="#leistungen" className="btn">Leistungen ansehen</a>
+            <a href="#kontakt" className="btn-secondary">Richtpreis anfragen</a>
           </div>
         </div>
 
-        {/* Rechte Seite: Formular */}
         <div className="card" id="kontakt">
           <h2 className="text-lg font-semibold mb-4">Richtpreis-Anfrage</h2>
           {sent ? (
@@ -109,15 +117,9 @@ function Hero({ sent, setSent }) {
               }}
               className="grid gap-4"
             >
-              <Label title="Name">
-                <input name="name" required className="input" />
-              </Label>
-              <Label title="E-Mail">
-                <input type="email" name="email" required className="input" />
-              </Label>
-              <Label title="Nachricht">
-                <textarea name="message" rows="4" className="input" required />
-              </Label>
+              <Label title="Name"><input name="name" required className="input" /></Label>
+              <Label title="E-Mail"><input type="email" name="email" required className="input" /></Label>
+              <Label title="Nachricht"><textarea name="message" rows="4" required className="input" /></Label>
               <input type="hidden" name="_subject" value="Neue Richtpreisanfrage – CaRo Lifting" />
               <input type="text" name="_gotcha" style={{display:"none"}} tabIndex="-1" autoComplete="off" />
               <button className="btn self-start" type="submit">Absenden</button>
@@ -129,18 +131,40 @@ function Hero({ sent, setSent }) {
   )
 }
 
+/* ---------- Nutzen (USP) ---------- */
+function Nutzen() {
+  const usps = [
+    ["Richtpreis in 24 h", "Schnelle Machbarkeit & Preisindikator."],
+    ["Bauteilschutz", "Greifer & Aufnahmen passend zu Ihrem Bauteil."],
+    ["Schlüsselfertig", "Konstruktion, Beschaffung, Montage, Inbetriebnahme."],
+    ["Dokumentation & CE", "Normgerecht, sicher, nachvollziehbar."],
+  ]
+  return (
+    <section className="container py-12">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {usps.map(([t, d], i) => (
+          <div key={i} className="card">
+            <div className="font-semibold">{t}</div>
+            <p className="text-slate-600">{d}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
+
 /* ---------- Leistungen ---------- */
 function Leistungen() {
   const items = [
-    { title: "Seilzug-Handlingsgeräte", desc: "Ergonomische Entlastung in Montage & Logistik. Traglasten, Hubwege, Endschalter nach Bedarf." },
-    { title: "Greifer & Aufnahmen",     desc: "Schnellwechsel, Dreh/Schwenk, Bauteilschutz – exakt auf Ihr Bauteil ausgelegt." },
-    { title: "Schienensysteme",          desc: "Leichtlaufschienen und Ausleger für flexible Arbeitsbereiche." },
-    { title: "Montage & Inbetriebnahme", desc: "Vor-Ort-Aufbau, Funktionsprüfung und Unterweisung." },
-    { title: "Dokumentation & CE",       desc: "Risikobeurteilung, Betriebsanleitung, Kennzeichnung – normgerecht." },
-    { title: "Service",                  desc: "Wartung, Ersatzteile, Erweiterungen." },
+    { title: "Seilzug-Handlingsgeräte", desc: "Ergonomische Entlastung in Montage & Logistik. Traglast, Hubweg, Endschalter nach Bedarf." },
+    { title: "Greifer & Aufnahmen", desc: "Schnellwechsel, Dreh/Schwenk, Bauteilschutz – exakt auf Ihr Bauteil ausgelegt." },
+    { title: "Schienensysteme", desc: "Leichtlaufschienen und Ausleger für flexible Arbeitsbereiche." },
+    { title: "Montage & Inbetriebnahme", desc: "Vor-Ort-Aufbau, Funktionsprüfung, Unterweisung." },
+    { title: "Dokumentation & CE", desc: "Risikobeurteilung, Betriebsanleitung, Kennzeichnung." },
+    { title: "Service", desc: "Wartung, Ersatzteile, Erweiterungen." },
   ]
   return (
-    <section id="leistungen" className="container py-16 scroll-mt-24">
+    <section id="leistungen" className="container py-18 scroll-mt-24">
       <h2 className="section">Leistungen</h2>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {items.map((it, i) => (
@@ -154,17 +178,46 @@ function Leistungen() {
   )
 }
 
+/* ---------- Branchen ---------- */
+function Branchen() {
+  const items = [
+    "Automotive", "Maschinenbau", "Elektronik", "Logistik", "Medizintechnik", "Allgemeine Industrie",
+  ]
+  return (
+    <section id="branchen" className="container py-18 scroll-mt-24">
+      <h2 className="section">Branchen</h2>
+      <div className="grid sm:grid-cols-3 lg:grid-cols-6 gap-4">
+        {items.map((b, i) => (
+          <div key={i} className="card text-center py-6">{b}</div>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+/* ---------- Referenzen (Logos Placeholder) ---------- */
+function Referenzen() {
+  return (
+    <section className="container py-12">
+      <div className="text-sm text-slate-500 mb-4">Ausgewählte Referenzen / Partner (Auszug)</div>
+      <div className="flex flex-wrap items-center gap-6 opacity-70">
+        <MiniKaro /><MiniKaro /><MiniKaro /><MiniKaro />
+      </div>
+    </section>
+  )
+}
+
 /* ---------- Prozess ---------- */
 function Prozess() {
   const steps = [
-    ["Anfrage",       "Kurzbeschreibung, Traglast, Hubweg, Umgebung (Foto/Skizze ideal)."],
-    ["Richtpreis",    "Binnen 24 h Preisindikator und Lieferzeit."],
-    ["Angebot",       "Konzeptskizze, Lieferumfang, Termine."],
-    ["Umsetzung",     "Konstruktion, Einkauf, Montage – alles aus einer Hand."],
-    ["Inbetriebnahme","Vor-Ort, Dokumentation & Übergabe."],
+    ["Anfrage", "Kurzbeschreibung, Traglast, Hubweg, Umgebung (Foto/Skizze ideal)."],
+    ["Richtpreis", "Binnen 24 h Preisindikator & Lieferzeit."],
+    ["Angebot", "Konzeptskizze, Lieferumfang, Termine."],
+    ["Umsetzung", "Konstruktion, Einkauf, Montage."],
+    ["Inbetriebnahme", "Vor-Ort, Dokumentation & Übergabe."],
   ]
   return (
-    <section id="prozess" className="container py-16 scroll-mt-24">
+    <section id="prozess" className="container py-18 scroll-mt-24">
       <h2 className="section">Projektablauf</h2>
       <ol className="grid lg:grid-cols-5 gap-4">
         {steps.map(([t, d], i) => (
@@ -179,19 +232,80 @@ function Prozess() {
   )
 }
 
+/* ---------- CTA-Streifen ---------- */
+function CTA() {
+  return (
+    <section className="bg-gradient-to-r from-sky-50 to-white border-y border-slate-200">
+      <div className="container py-12 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="text-lg font-semibold">Projektidee? – Wir geben in 24 h einen Richtpreis.</div>
+        <a href="#kontakt" className="btn">Jetzt anfragen</a>
+      </div>
+    </section>
+  )
+}
+
+/* ---------- Kontakt (zweite Ankerstelle) ---------- */
+function Kontakt({ sent, setSent }) {
+  return (
+    <section id="kontakt" className="container py-18 scroll-mt-24">
+      <div className="grid lg:grid-cols-2 gap-10 items-start">
+        <div>
+          <h2 className="section">Kontakt</h2>
+          <p className="lead">Schicken Sie uns kurz die Eckdaten – wir melden uns schnell mit einem Richtpreis.</p>
+          <div className="card mt-6 text-sm text-slate-700">
+            <div><span className="text-slate-500">E-Mail:</span> info@caro-lifting.com</div>
+            <div><span className="text-slate-500">Adresse:</span> wird nachgetragen</div>
+          </div>
+        </div>
+
+        <div className="card">
+          {sent ? (
+            <p className="text-green-600">Danke! Ihre Anfrage wurde übermittelt.</p>
+          ) : (
+            <form
+              onSubmit={(e) => {
+                e.preventDefault()
+                const form = e.currentTarget
+                fetch(FORM_ENDPOINT, {
+                  method: "POST",
+                  body: new FormData(form),
+                  headers: { Accept: "application/json" },
+                })
+                  .then(r => r.ok ? setSent(true) : alert("Fehler beim Senden"))
+                  .catch(() => alert("Fehler beim Senden"))
+              }}
+              className="grid gap-4"
+            >
+              <Label title="Name"><input name="name" required className="input" /></Label>
+              <Label title="E-Mail"><input type="email" name="email" required className="input" /></Label>
+              <Label title="Nachricht"><textarea name="message" rows="4" required className="input" /></Label>
+              <input type="hidden" name="_subject" value="Kontakt – CaRo Lifting" />
+              <input type="text" name="_gotcha" style={{display:"none"}} tabIndex="-1" autoComplete="off" />
+              <button className="btn self-start" type="submit">Absenden</button>
+            </form>
+          )}
+        </div>
+      </div>
+    </section>
+  )
+}
+
 /* ---------- Footer ---------- */
 function Footer() {
   return (
     <footer className="border-t border-slate-200 py-6">
       <div className="container text-sm text-slate-500 flex items-center justify-between">
         <span>© {new Date().getFullYear()} CaRo Lifting – Castor & Rosenfeld</span>
-        <span className="opacity-70">Made with ❤ in Bavaria</span>
+        <div className="flex items-center gap-4">
+          <a className="link" href="/impressum.html">Impressum</a>
+          <a className="link" href="/datenschutz.html">Datenschutz</a>
+        </div>
       </div>
     </footer>
   )
 }
 
-/* ---------- UI-Hilfen ---------- */
+/* ---------- UI-Bausteine ---------- */
 function Label({ title, children }) {
   return (
     <label className="block text-sm font-medium text-slate-700">
@@ -210,8 +324,9 @@ function KaroLogo({ className = "h-8 w-8" }) {
           <stop offset="1" stopColor="#3b82f6" />
         </linearGradient>
       </defs>
-      <rect x="6"  y="6"  width="24" height="24" rx="4" fill="url(#g)" />
+      <rect x="6" y="6" width="24" height="24" rx="4" fill="url(#g)" />
       <rect x="34" y="34" width="24" height="24" rx="4" fill="url(#g)" />
     </svg>
   )
 }
+function MiniKaro() { return <KaroLogo className="h-6 w-6" /> }
