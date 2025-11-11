@@ -11,7 +11,7 @@ html, body, #root { height: 100%; }
 body {
   color: var(--ink);
   background: #fff;
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter,
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Inter, Roboto,
     "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
 }
 
@@ -30,21 +30,19 @@ body {
 
 .btn-secondary {
   @apply inline-flex justify-center rounded-xl px-4 py-2 text-sm font-medium border border-sky-200 text-sky-700;
-  background: white;
+  background: #fff;
 }
 .btn-secondary:hover { @apply border-sky-300 bg-sky-50; }
 
 .link { @apply text-sm text-slate-700 hover:text-ink transition; }
 
-.card {
-  @apply rounded-2xl border border-slate-200 bg-white p-6;
-  box-shadow: 0 8px 28px rgba(2, 132, 199, .08);
-}
+.card { @apply rounded-2xl border border-slate-200 bg-white p-6; box-shadow: 0 8px 28px rgba(2,132,199,.08); }
 
 h2.section { @apply text-2xl font-semibold tracking-tight mb-4; }
 p.lead { @apply text-slate-600 leading-relaxed; }
-.input { @apply w-full rounded-md border border-slate-300 px-3 py-2 text-sm; }
 
-.scroll-mt-24 { scroll-margin-top: 6rem; } /* Sticky-Header Offset */
+.input { @apply w-full rounded-lg border border-slate-300 px-3 py-2 text-sm; }
+.input:focus { @apply outline-none ring-2 ring-sky-200 border-sky-300; }
+
+.scroll-mt-24 { scroll-margin-top: 6rem; } /* für Sticky-Header */
 .py-18 { padding-top: 4.5rem; padding-bottom: 4.5rem; }
-.lg\:py-28 { @apply lg:pt-28 lg:pb-28; }
